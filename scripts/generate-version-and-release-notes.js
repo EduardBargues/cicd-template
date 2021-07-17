@@ -163,7 +163,6 @@ function updateChangelogFile(newVersion, changes) {
   );
   changelog += "- - -\n";
   changelog += "- - -\n";
-  changelog = includeLinks(changelog);
   console.log(changelog);
   let previousChangelog = "";
   try {
@@ -172,22 +171,6 @@ function updateChangelogFile(newVersion, changes) {
     previousChangelog = "";
   }
   fs.writeFileSync(changelogFile, `${changelog}${previousChangelog}`);
-}
-function includeLinks(changelog) {
-  const tickets = reverse(changelog)
-    .match(/\d+-[A-Z]+(?!-?[a-zA-Z]{1,10})/g)
-    .map((rt) => reverse(rt));
-  const uniqueTickets = [...new Set(tickets)];
-  uniqueTickets.forEach((ticket) => {
-    changelog = changelog.replace(
-      `${ticket}`,
-      `[${ticket}](https://ohpen.atlassian.net/browse/${ticket})`
-    );
-  });
-  return changelog;
-}
-function reverse(str) {
-  return str.split("").reverse().join("");
 }
 function commitAndTag(newVersionAsText) {
   child.execSync(`git add ${versionFile}`);
