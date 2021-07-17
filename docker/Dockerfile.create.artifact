@@ -1,0 +1,15 @@
+ARG VERSION=3.1-alpine3.10
+
+FROM mcr.microsoft.com/dotnet/core/sdk:$VERSION AS build
+WORKDIR /build
+COPY /src .
+RUN dotnet test 
+RUN dotnet publish ./WebApi/WebApi.csproj -c Release -o ./output
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:$VERSION AS final
+WORKDIR /app
+COPY --from=build ./build/output .
+ENV ASPNETCORE_URLS=http://host.docker.internal:5000 \
+    DOTNET_RUNNING_IN_CONTAINER=true
+
+ENTRYPOINT ["dotnet", "WebApi.dll"]
