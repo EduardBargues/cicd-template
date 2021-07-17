@@ -1,0 +1,19 @@
+name: continuous-delivery
+on:
+  push:
+    branches: [main]
+jobs:
+  continuous-delivery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: dotnet tool install -g Amazon.Lambda.Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+      - name: semver & changelog
+        run: |
+          date > generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          node ./scripts/generate-version-and-release-notes.js
