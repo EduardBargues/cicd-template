@@ -11,15 +11,27 @@ Out of the box, the following features are provided:
   A (dummy) service is included in the _src_ folder. The folder includes a functional serverless web-api developed in dotnet-core-3.1 with unit-tests and a '_/diagnostics_' endpoint that returns '_diagnostics-ok_' when called.
   A folder called "docker" is located in the root of the repo. Inside, you'll find 2 dockerfiles to create.artifact and run e2e tests locally. Both dockerfiles are meant to help you better develop your api localy.
 
+- **continuous-integration**
+
+  The repo provides scripts (folder _scripts_) and work-flow definitions(folder _.github.workflows_) that will trigger checks during pull requests. The workflow definition can be found at _pull-requests-workflow_. This definition includes: ensuring that all commits follow _conventional-commits_, and running _unit-tests_.
+
+- **continuous-delivery**
+
+  Once a pull request is merged into the **main** branch, the workflow _after-merge-workflow_ is launched. Here, the workflow _semantically versions_ the repository, and tags your merge commit with the new semver.
+
+- **End to end testing**
+
+  A folder called tests holds some e2e tests that represent how your client would call the api once deployed. Those tests can be run locally using the scripts inside the _docker_ folder.
+
 ### Up-coming features
 
 - **continuous-integration**
 
-  The repo provides scripts (folder _scripts_) and work-flow definitions(folder _.github.workflows_) that will trigger checks during pull requests. The workflow definition can be found at _pull-requests-workflow_. This definition includes: ensuring that all commits follow _conventional-commits_ and contain a _jira_ ticket, running _unit-tests_, creating and uploading temporary artifacts to an s3 bucket from branch and deploying the infrastructure into a _dev-aws-account_.
+  creating and uploading temporary artifacts to an s3 bucket from branch and deploying the infrastructure into a _dev-aws-account_.
 
 - **continuous-delivery**
 
-  Once a pull request is merged into the main branch, the workflow _after-merge-workflow_ is launched. Here, the workflow _semantically versions_ the repository, tags your merge commit with the new semver, creates and uploads semver artifacts, and deploys them to an aws-account automatically.
+  creates and uploads semver artifacts, and deploys them to an aws-account automatically.
 
 - **continuous-deployment**
 
@@ -27,7 +39,7 @@ Out of the box, the following features are provided:
 
 - **End to end testing**
 
-  A folder called tests holds some e2e tests that represent how your client would call the api once deployed.
+  Include capability to run e2e tests against an already deployed api in a aws account.
 
 - **manual-deployment**
 
