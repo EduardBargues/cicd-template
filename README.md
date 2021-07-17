@@ -65,9 +65,13 @@ To start working on your own solution follow those steps:
 - Fork the repo to create your own.
 - Clone your new repo and set your root inside the folder.
 - Execute the following commands in your terminal:
+
   > **cd cicd-template/** #move inside the repository
+
   > **chmod +x ./docker/\*.sh** #execution permissions to the .sh files
+
   > **./docker/run-container-locally.sh** # build aspnetcore image and run webapi in http://localhost:5000/diagnostics
+
   > **./docker/run-e2e-locally.sh** # in a new terminal! => run e2e tests against the previous container (port 5000)
 
 ## Who/How to contact
