@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~>0.14"
+  required_version = "~>1.0.2"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -10,8 +10,4 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  assume_role {
-    role_arn     = local.tfm_deploy_role_arn
-    session_name = "terraform"
-  }
 }

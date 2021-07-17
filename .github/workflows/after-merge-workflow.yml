@@ -15,3 +15,15 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           node ./scripts/generate-version-and-release-notes.js
+      - name: upload-semver-artifacts
+        env:
+          ARTIFACTS_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_AWS_ACCOUNT_ID }}
+          ARTIFACTS_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          chmod +x ./scripts/*.sh
+          VERSION=$(jq -r '.version' version.json)
+          ./scripts/create-artifact.sh $GITHUB_HEAD_REF
+          ./scripts/upload-artifact.sh $GITHUB_HEAD_REF

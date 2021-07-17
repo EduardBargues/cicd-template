@@ -1,0 +1,8 @@
+{
+  "service_name": "service",
+  "service_version": "version",
+  "service_group": "aux",
+  "environment": "dev",
+  "destination_account_id": "0123456789",
+  "aws_region": "eu-west-1"
+}
