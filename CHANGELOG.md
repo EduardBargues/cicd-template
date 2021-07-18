@@ -1,3 +1,9 @@
+# :confetti_ball: 0.2.0.0 (2021-07-18T16:36:02.902Z)
+- - -
+## :hammer: Features
+* introduce deployments (#12)
+- - -
+- - -
 # :confetti_ball: 0.1.0.3 (2021-07-18T11:02:51.104Z)
 - - -
 ## :newspaper: Others
