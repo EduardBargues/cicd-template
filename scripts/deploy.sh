@@ -41,11 +41,11 @@ aws s3 cp $iacS3Origin $iacDestinationPath
 logAction "UNZIPPING IaC FILE"
 unzip "./$deploymentFolder/$iacFileName" -d "./$deploymentFolder"
 
-logAction "DOWNLOADING SOURCE ARTIFACT FROM S3 BUCKET"
-srcFileName="$SERVICE_NAME-$VERSION.zip"
-srcS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$srcFileName"
-srcDestinationPath="./$deploymentFolder"
-aws s3 cp $srcS3Origin $srcDestinationPath
+# logAction "DOWNLOADING SOURCE ARTIFACT FROM S3 BUCKET"
+# srcFileName="$SERVICE_NAME-$VERSION.zip"
+# srcS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$srcFileName"
+# srcDestinationPath="./$deploymentFolder"
+# aws s3 cp $srcS3Origin $srcDestinationPath
 
 logAction "ENTERING IaC FOLDER FOR DEPLOYMENT"
 tfmFolder="./$deploymentFolder/terraform"
@@ -68,6 +68,7 @@ sed -i "s/replace-me-environment/$ENVIRONMENT/g" $tfvars
 sed -i "s/replace-me-destination_account_id/$AWS_ACCOUNT_ID/g" $tfvars
 sed -i "s/replace-me-aws_region/$AWS_REGION/g" $tfvars
 sed -i "s/replace-me-deployment_role_name/$DEPLOYMENTS_ROLE_NAME/g" $tfvars
+sed -i "s/replace-me-lambda_s3_bucket/$BUCKET_NAME/g" terraform.tfvars.json
 
 logAction "DEPLOYING"
 terraform init

@@ -29,3 +29,7 @@ variable "deployment_role_name" {
   description = "name of the role to be assumed by terraform so is able to properly apply/deploy"
   sensitive   = true
 }
+variable "lambda_s3_bucket" {
+  type        = string
+  description = "name of the s3 bucket that holds the lambda artifacts"
+}
