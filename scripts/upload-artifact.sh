@@ -4,9 +4,9 @@ source ./scripts/export-environment-variables.sh
 
 VERSION=$(echo "$1"|tr '/' '-')
 export AWS_DEFAULT_REGION=$AWS_REGION
-export AWS_ACCOUNT_ID=$ARTIFACTS_AWS_ACCOUNT_ID
+export AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
-aws s3 cp "./$SERVICE_NAME-$VERSION.zip" "s3://$ARTIFACTS_BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION.zip"
-aws s3 cp "./terraform-$SERVICE_NAME-$VERSION.zip" "s3://$ARTIFACTS_BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/terraform-$SERVICE_NAME-$VERSION.zip"
+aws s3 cp "./$SERVICE_NAME-$VERSION.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION.zip"
+aws s3 cp "./terraform-$SERVICE_NAME-$VERSION.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/terraform-$SERVICE_NAME-$VERSION.zip"
