@@ -1,3 +1,9 @@
+# :confetti_ball: 0.4.0.1 (2021-07-18T18:50:23.676Z)
+- - -
+## :newspaper: Others
+* ci:  run e2e tests in pull requests (#18)
+- - -
+- - -
 # :confetti_ball: 0.4.0.0 (2021-07-18T18:03:55.116Z)
 - - -
 ## :hammer: Features
