@@ -1,6 +1,6 @@
-const given = require("../../steps/given");
-const when = require("../../steps/when");
-const then = require("../../steps/then");
+const given = require("./given");
+const when = require("./when");
+const then = require("./then");
 const { beforeAll } = require("@jest/globals");
 
 describe(`Given application is up and running`, () => {
