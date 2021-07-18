@@ -11,6 +11,8 @@
 *.sln.docstates
 
 *.zip
+*.terraform
+*.terraform.lock.hcl
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

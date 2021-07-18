@@ -26,3 +26,48 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/run-unit-tests.sh
+  check-iac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-tf
+        with:
+          paths: ./terraform
+      - name: terraform-validate
+        if: steps.changed-tf.outputs.changed == 'true'
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/tfm-validate.sh
+      - name: terraform-plan
+        if: steps.changed-tf.outputs.changed == 'true'
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/tfm-plan.sh
+  upload-branch-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-tf-src-tests
+        with:
+          paths: ./terraform ./src ./tests
+      - name: dotnet tool install -g Amazon.Lambda.Tools
+        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        run: dotnet tool install -g Amazon.Lambda.Tools
+      - name: upload-branch-artifacts
+        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        env:
+          ARTIFACTS_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_AWS_ACCOUNT_ID }}
+          ARTIFACTS_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/create-artifact.sh $GITHUB_HEAD_REF
+          ./scripts/upload-artifact.sh $GITHUB_HEAD_REF
