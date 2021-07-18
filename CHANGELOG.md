@@ -1,3 +1,9 @@
+# :confetti_ball: 0.4.0.0 (2021-07-18T18:03:55.116Z)
+- - -
+## :hammer: Features
+* introduce environment as prefix of infra name(s) (#17)
+- - -
+- - -
 # :confetti_ball: 0.3.0.0 (2021-07-18T17:54:04.953Z)
 - - -
 ## :hammer: Features
