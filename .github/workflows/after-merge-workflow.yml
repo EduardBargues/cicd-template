@@ -27,5 +27,5 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           VERSION=$(jq -r '.version' version.json)
-          ./scripts/create-artifact.sh $GITHUB_HEAD_REF
-          ./scripts/upload-artifact.sh $GITHUB_HEAD_REF
+          ./scripts/create-artifact.sh $VERSION
+          ./scripts/upload-artifact.sh $VERSION
