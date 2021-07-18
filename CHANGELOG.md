@@ -1,3 +1,9 @@
+# :confetti_ball: 0.3.0.0 (2021-07-18T17:54:04.953Z)
+- - -
+## :hammer: Features
+* include apigw, cloudwatch and outputs to terraform files (#16)
+- - -
+- - -
 # :confetti_ball: 0.2.0.3 (2021-07-18T17:07:45.345Z)
 - - -
 ## :newspaper: Others
