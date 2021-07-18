@@ -1,8 +1,9 @@
 {
-  "service_name": "service",
-  "service_version": "version",
-  "service_group": "aux",
-  "environment": "dev",
-  "destination_account_id": "0123456789",
-  "aws_region": "eu-west-1"
+  "service_name": "replace-me-service_name",
+  "service_version": "replace-me-service_version",
+  "service_group": "replace-me-service_group",
+  "environment": "replace-me-environment",
+  "destination_account_id": "replace-me-destination_account_id",
+  "aws_region": "replace-me-aws_region",
+  "deployment_role_name": "replace-me-deployment_role_name"
 }

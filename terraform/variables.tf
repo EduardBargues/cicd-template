@@ -17,18 +17,15 @@ variable "environment" {
 variable "destination_account_id" {
   type        = string
   description = "aws account id where the deployment (or destroy) will take place."
+  sensitive   = true
 }
 variable "aws_region" {
   type        = string
   description = "aws region"
+  sensitive   = true
 }
-
-locals {
-  prefix = "${var.service_name}-${var.service_group}"
-  tags = {
-    "service-name"    = var.service_name
-    "service-version" = var.service_version
-    "service-group"   = var.service_group
-    "environment"     = var.environment
-  }
+variable "deployment_role_name" {
+  type        = string
+  description = "name of the role to be assumed by terraform so is able to properly apply/deploy"
+  sensitive   = true
 }
