@@ -1,6 +1,11 @@
 # CICD-TEMPLATE
 
-This repo is meant to provide an initial template for teams so they can fork it and start working on it.
+This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds a web api supported by a lambda and developed in aspnetcore 3.1. Useful for teams that look for a functional solution that requires minimum configuration.
+
+- WebApi developed in C# and AspNetCore 3.1 (supported by a lambda).
+- Infrastructure as Code using Terraform 1.x.
+- End to end tests developed in NodeJs with Jest.
+- Docker images are used to be able to run the web api locally without installing anything.
 
 ## Features this repo provides
 
@@ -13,33 +18,25 @@ Out of the box, the following features are provided:
 
 - **continuous-integration**
 
-  The repo provides scripts (folder _scripts_) and work-flow definitions(folder _.github.workflows_) that will trigger checks during pull requests. The workflow definition can be found at _pull-requests-workflow_. This definition includes: ensuring that all commits follow _conventional-commits_, and running _unit-tests_.
+  The repo provides scripts (folder _scripts_) and work-flow definitions(folder _.github.workflows_) that will trigger checks during pull requests. The workflow definition can be found at _pull-requests-workflow_. This definition includes: ensuring that all commits follow _conventional-commits_, and running _unit-tests_. It also creates and uploads temporary artifacts to an s3 bucket from branch and deploys the infrastructure into a _dev-aws-account_.
 
 - **continuous-delivery**
 
-  Once a pull request is merged into the **main** branch, the workflow _after-merge-workflow_ is launched. Here, the workflow _semantically versions_ the repository, and tags your merge commit with the new semver.
-
-- **End to end testing**
-
-  A folder called tests holds some e2e tests that represent how your client would call the api once deployed. Those tests can be run locally using the scripts inside the _docker_ folder.
-
-### Up-coming features
-
-- **continuous-integration**
-
-  creating and uploading temporary artifacts to an s3 bucket from branch and deploying the infrastructure into a _dev-aws-account_.
-
-- **continuous-delivery**
-
-  creates and uploads semver artifacts, and deploys them to an aws-account automatically.
+  Once a pull request is merged into the **main** branch, the workflow _after-merge-workflow_ is launched. Here, the workflow _semantically versions_ the repository, and tags your merge commit with the new semver. It also creates and uploads semver artifacts, and deploys them to an aws-account automatically.
 
 - **continuous-deployment**
 
-  In the same _after-merge-workflow_, you can find a deployment step to a _dev-aws-account_ as a continuous-deployment example. Change it to your team needs.
+  In the same _after-merge-workflow_, you can find a deployment step to a _aws-account_ as a continuous-deployment example. Change it to your team needs.
+
+### Up-coming features
 
 - **End to end testing**
 
-  Include capability to run e2e tests against an already deployed api in a aws account.
+  A folder called tests holds some e2e tests that represent how your client would call the api once deployed. Those tests can be run locally using the scripts inside the _docker_ folder. Include capability to run e2e tests against an already deployed api in a aws account.
+
+- **Performance e2e testing**
+
+  A folder called _performance-tests_ holds some e2e tests that represent an hypothetical scenario where your client how your client would call the api once deployed. Those tests can be run locally using the scripts inside the _docker_ folder. Include capability to run e2e tests against an already deployed api in a aws account.
 
 - **manual-deployment**
 
