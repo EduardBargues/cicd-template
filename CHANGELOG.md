@@ -1,3 +1,9 @@
+# :confetti_ball: 0.2.0.1 (2021-07-18T16:42:19.297Z)
+- - -
+## :newspaper: Others
+* ci:  fix butcket name for continuous delivery flow (#13)
+- - -
+- - -
 # :confetti_ball: 0.2.0.0 (2021-07-18T16:36:02.902Z)
 - - -
 ## :hammer: Features
