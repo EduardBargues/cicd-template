@@ -1,3 +1,9 @@
+# :confetti_ball: 0.1.0.2 (2021-07-18T10:59:15.468Z)
+- - -
+## :newspaper: Others
+* ci:  fix semver artifact upload workflow (#10)
+- - -
+- - -
 # :confetti_ball: 0.1.0.1 (2021-07-18T10:57:10.100Z)
 - - -
 ## :newspaper: Others
