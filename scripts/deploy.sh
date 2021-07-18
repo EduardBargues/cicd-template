@@ -41,12 +41,6 @@ aws s3 cp $iacS3Origin $iacDestinationPath
 logAction "UNZIPPING IaC FILE"
 unzip "./$deploymentFolder/$iacFileName" -d "./$deploymentFolder"
 
-# logAction "DOWNLOADING SOURCE ARTIFACT FROM S3 BUCKET"
-# srcFileName="$SERVICE_NAME-$VERSION.zip"
-# srcS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$srcFileName"
-# srcDestinationPath="./$deploymentFolder"
-# aws s3 cp $srcS3Origin $srcDestinationPath
-
 logAction "ENTERING IaC FOLDER FOR DEPLOYMENT"
 tfmFolder="./$deploymentFolder/terraform"
 cd $tfmFolder
@@ -78,8 +72,10 @@ logAction "SETTING INFRASTRUCTURE CONFIGURATION"
 confS3Key="s3://$BUCKET_NAME/configurations/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfvars.json"
 aws s3 cp $tfvars $confS3Key
 
-# logAction "WRITTING OUTPUTS IN A JSON"
-# outputsFile="terraform.outputs.json"
-# logKeyValuePair "output-file" $outputsFile
-# terraform output -json >> $outputsFile
-# cat $outputsFile
+logAction "WRITTING OUTPUTS IN A JSON"
+outputsFile="terraform.outputs.json"
+logKeyValuePair "output-file" $outputsFile
+terraform output -json >> $outputsFile
+cp $outputsFile "../../app.json"
+
+cd ..
