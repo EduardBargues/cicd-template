@@ -40,3 +40,4 @@ jobs:
           chmod +x ./scripts/*.sh
           VERSION=$(jq -r '.version' version.json)
           ./scripts/deploy.sh $VERSION "dev" "main"
+          ./scripts/run-performance-tests.sh

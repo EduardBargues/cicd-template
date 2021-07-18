@@ -13,6 +13,7 @@
 *.zip
 *.terraform
 *.terraform.lock.hcl
+.vscode
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

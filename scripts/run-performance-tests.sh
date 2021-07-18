@@ -15,11 +15,8 @@ logAction()
 ## SCRIPT ##
 ############
 set -e
-logAction "RUNNING E2E TESTS AGAINST"
+logAction "RUNNING PERFORMANCE TESTS AGAINST"
 cat ./app.json
 cp ./app.json ./tests/app.json
-cd ./tests/e2e
-npm i
-npm run e2e
-cd ..
-cd ..
+dotnet run --project ./tests/performance/Performance.Tests.Console.csproj
+cat ./tests/performance/result.json
