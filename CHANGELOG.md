@@ -1,3 +1,9 @@
+# :confetti_ball: 0.1.0.3 (2021-07-18T11:02:51.104Z)
+- - -
+## :newspaper: Others
+* ci:  set (sem)version when creating artifacts from main branch (#11)
+- - -
+- - -
 # :confetti_ball: 0.1.0.2 (2021-07-18T10:59:15.468Z)
 - - -
 ## :newspaper: Others
