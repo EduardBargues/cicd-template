@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
 jobs:
-  continuous-delivery:
+  continuous-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,4 +38,5 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           chmod +x ./scripts/*.sh
+          VERSION=$(jq -r '.version' version.json)
           ./scripts/deploy.sh $VERSION "dev" "main"
