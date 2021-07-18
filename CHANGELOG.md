@@ -1,3 +1,9 @@
+# :confetti_ball: 0.2.0.2 (2021-07-18T16:45:09.278Z)
+- - -
+## :newspaper: Others
+* ci:  fix version value during continuous-deployment flow (#14)
+- - -
+- - -
 # :confetti_ball: 0.2.0.1 (2021-07-18T16:42:19.297Z)
 - - -
 ## :newspaper: Others
