@@ -47,6 +47,7 @@ sed -i "s/replace-me-environment/$ENVIRONMENT/g" terraform.tfvars.json
 sed -i "s/replace-me-destination_account_id/$AWS_ACCOUNT_ID/g" terraform.tfvars.json
 sed -i "s/replace-me-aws_region/$AWS_REGION/g" terraform.tfvars.json
 sed -i "s/replace-me-deployment_role_name/$DEPLOYMENTS_ROLE_NAME/g" terraform.tfvars.json
+sed -i "s/replace-me-lambda_s3_bucket/$BUCKET_NAME/g" terraform.tfvars.json
 
 terraform init
 terraform plan
