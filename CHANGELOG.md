@@ -1,3 +1,9 @@
+# :confetti_ball: 0.6.1.0 (2021-07-19T17:15:10.053Z)
+- - -
+## :bug: Fixes
+* add aws region to destroy workflow (#23)
+- - -
+- - -
 # :confetti_ball: 0.6.0.0 (2021-07-19T17:05:42.181Z)
 - - -
 ## :hammer: Features
