@@ -14,19 +14,9 @@ variable "environment" {
   type        = string
   description = "environment name: dev, int, tst, acc, prd, ... "
 }
-variable "destination_account_id" {
-  type        = string
-  description = "aws account id where the deployment (or destroy) will take place."
-  sensitive   = true
-}
 variable "aws_region" {
   type        = string
   description = "aws region"
-  sensitive   = true
-}
-variable "deployment_role_name" {
-  type        = string
-  description = "name of the role to be assumed by terraform so is able to properly apply/deploy"
   sensitive   = true
 }
 variable "lambda_s3_bucket" {

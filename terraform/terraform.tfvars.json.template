@@ -3,8 +3,6 @@
   "service_version": "replace-me-service_version",
   "service_group": "replace-me-service_group",
   "environment": "replace-me-environment",
-  "destination_account_id": "replace-me-destination_account_id",
   "aws_region": "replace-me-aws_region",
-  "deployment_role_name": "replace-me-deployment_role_name",
   "lambda_s3_bucket":"replace-me-lambda_s3_bucket"
 }
