@@ -11,19 +11,26 @@ namespace Performance.Tests.Console
 {
     class Program
     {
-        const string appFile = "./tests/app.json";
-        const string resultFile = "./tests/performance/result.json";
+        // const string appFile = "./tests/app.json";
+        // const string resultFile = "./tests/performance/result.json";
         static async Task Main(string[] args)
         {
-            int numberOfThreads = 5;
-            int numberOfSeconds = 10;
-            var configJson = File.ReadAllText(appFile);
-            var config = JsonConvert.DeserializeObject<App>(configJson);
-            string url = $"{config.Base_Url.Value}/{config.Diagnostics_Endpoint.Value}";//"https://r18ajbffd0.execute-api.eu-west-1.amazonaws.com/dev/diagnostics";
+            double maxAverageResponseTime = double.Parse(args[0]);
+            int threads = int.Parse(args[1]);
+            int seconds = int.Parse(args[2]);
+            string baseUrl = args[3];
+            string diagnosticsEndpoint = args[4];
+            string url = $"{baseUrl}/{diagnosticsEndpoint}";
 
-            double averageResponseTime = await Go(numberOfThreads, numberOfSeconds, url);
-            string json = JsonConvert.SerializeObject(new FinalResult() { AverageResponseTime = averageResponseTime });
-            File.WriteAllText(resultFile, json);
+            double averageResponseTime = await Go(threads, seconds, url);
+            System.Console.WriteLine($"    average-response-time [milliseconds]: {averageResponseTime}");
+            double score = (maxAverageResponseTime - averageResponseTime) / maxAverageResponseTime;
+            System.Console.WriteLine($"    score [0->1]: {score}");
+            if (averageResponseTime > maxAverageResponseTime)
+            {
+                string message = "ERROR => MAXIMUM AVERAGE RESPONSE TIME EXCEEDED!";
+                throw new Exception(message);
+            }
         }
 
         public static async Task<double> Go(int numberOfThreads, int numberOfSeconds, string url)
@@ -40,17 +47,18 @@ namespace Performance.Tests.Console
         public static async Task<Result> CallDiagnosticsEndpoint(int threadId, int numberOfSeconds, string url)
         {
             Result result = new Result() { ThreadId = threadId };
-            HttpClient client = new HttpClient();
-            Stopwatch watch = new Stopwatch();
             DateTime end = DateTime.Now.AddSeconds(numberOfSeconds);
-            while (DateTime.Now < end)
+            Stopwatch watch = new Stopwatch();
+            using (HttpClient client = new HttpClient())
             {
-                watch.Start();
-                await client.GetAsync(url);
-                watch.Stop();
-                result.ResponseTimes.Add(watch.ElapsedMilliseconds);
-                System.Console.WriteLine($"RESPONSE TIME [milliseconds]: {watch.ElapsedMilliseconds}");
-                watch.Reset();
+                while (DateTime.Now < end)
+                {
+                    watch.Start();
+                    await client.GetAsync(url);
+                    watch.Stop();
+                    result.ResponseTimes.Add(watch.ElapsedMilliseconds);
+                    watch.Reset();
+                }
             }
 
             return result;
