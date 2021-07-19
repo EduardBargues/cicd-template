@@ -1,3 +1,9 @@
+# :confetti_ball: 0.6.1.1 (2021-07-19T17:25:41.368Z)
+- - -
+## :newspaper: Others
+* refactor:  remove role and destination account from tfvars (#24)
+- - -
+- - -
 # :confetti_ball: 0.6.1.0 (2021-07-19T17:15:10.053Z)
 - - -
 ## :bug: Fixes
