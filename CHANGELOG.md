@@ -1,3 +1,9 @@
+# :confetti_ball: 0.6.0.0 (2021-07-19T17:05:42.181Z)
+- - -
+## :hammer: Features
+* introduce destroy workflow (#22)
+- - -
+- - -
 # :confetti_ball: 0.5.0.2 (2021-07-19T14:08:17.966Z)
 - - -
 ## :newspaper: Others
