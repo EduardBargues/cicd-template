@@ -11,8 +11,6 @@ namespace Performance.Tests.Console
 {
     class Program
     {
-        // const string appFile = "./tests/app.json";
-        // const string resultFile = "./tests/performance/result.json";
         static async Task Main(string[] args)
         {
             double maxAverageResponseTime = double.Parse(args[0]);
