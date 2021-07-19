@@ -1,3 +1,9 @@
+# :confetti_ball: 0.6.2.0 (2021-07-19T17:29:39.108Z)
+- - -
+## :bug: Fixes
+* fix s3 tfvars key on destroy.sh script (#25)
+- - -
+- - -
 # :confetti_ball: 0.6.1.1 (2021-07-19T17:25:41.368Z)
 - - -
 ## :newspaper: Others
