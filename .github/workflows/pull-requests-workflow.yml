@@ -58,7 +58,7 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/tfm-plan.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
-  run-e2e-tests:
+  deploy-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -83,7 +83,7 @@ jobs:
           chmod +x ./scripts/*.sh
           ./scripts/create-artifact.sh $GITHUB_HEAD_REF
           ./scripts/upload-artifact.sh $GITHUB_HEAD_REF
-      - name: deploy-branch-and-run-e2e-tests
+      - name: deploy-branch
         if: steps.changed-tf-src-tests.outputs.changed == 'true'
         env:
           AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_AWS_ACCOUNT_ID }}
@@ -94,4 +94,13 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/deploy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
+      - name: run-e2e-tests
+        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        run: |
+          chmod +x ./scripts/*.sh
           ./scripts/run-e2e-tests.sh
+      - name: run-performance-tests
+        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/run-performance-tests.sh 200 10 15
