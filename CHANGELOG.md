@@ -1,3 +1,9 @@
+# :confetti_ball: 0.5.0.2 (2021-07-19T14:08:17.966Z)
+- - -
+## :newspaper: Others
+* ci:  refactor readme (#21)
+- - -
+- - -
 # :confetti_ball: 0.5.0.1 (2021-07-19T13:47:14.347Z)
 - - -
 ## :newspaper: Others
