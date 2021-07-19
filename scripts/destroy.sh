@@ -33,7 +33,7 @@ logKeyValuePair "service-group" $GROUP
 logAction "DOWNLOADING IaC FROM S3 BUCKET"
 iacFileName="terraform-$SERVICE_NAME-$VERSION.zip"
 iacS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$iacFileName"
-deploymentFolder="deployment-$(date "+%Y-%m-%d--%H-%M-%S")"
+deploymentFolder="destroy-$(date "+%Y-%m-%d--%H-%M-%S")"
 mkdir $deploymentFolder
 iacDestinationPath="./$deploymentFolder"
 aws s3 cp $iacS3Origin $iacDestinationPath
@@ -63,18 +63,10 @@ sed -i "s/replace-me-aws_region/$AWS_REGION/g" $tfvars
 sed -i "s/replace-me-deployment_role_name/$DEPLOYMENTS_ROLE_NAME/g" $tfvars
 sed -i "s/replace-me-lambda_s3_bucket/$BUCKET_NAME/g" terraform.tfvars.json
 
-logAction "DEPLOYING"
+logAction "DESTROYING"
 terraform init
-terraform apply -auto-approve
+terraform destroy -auto-approve
 
-logAction "SETTING INFRASTRUCTURE CONFIGURATION"
+logAction "DELETING INFRASTRUCTURE CONFIGURATION"
 confS3Key="s3://$BUCKET_NAME/configurations/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfvars.json"
-aws s3 cp $tfvars $confS3Key
-
-logAction "WRITTING OUTPUTS IN A JSON"
-outputsFile="terraform.outputs.json"
-logKeyValuePair "output-file" $outputsFile
-terraform output -json >> $outputsFile
-cp $outputsFile "../../app.json"
-
-cd ..
+aws s3api delete-object --bucket $BUCKET_NAME --key $confS3Key

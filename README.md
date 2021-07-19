@@ -43,15 +43,15 @@ Out of the box, the following features are provided:
 
   A folder called _tests_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time.
 
+- **manual-infrastructure-destruction**
+
+  There is a workflow called _destroy-workflow_ that will erase your infrastructure in the provided aws account. Use it with caution ;) ...
+
 ### Up-coming features
 
 - **manual-deployment**
 
   There is also a workflow called _deploy-workflow_ that allows you to manually deploy a specific service and version to an aws-account by introducing the required inputs.
-
-- **manual-infrastructure-destruction**
-
-  There is a workflow called _destroy-workflow_ that will erase your infrastructure in the provided aws account. Use it with caution ;) ...
 
 - **multi-environment configuration**
 
@@ -88,9 +88,9 @@ To start working on your own solution follow those steps:
 ## Who/How to contact
 
 - Eduard Bargués
-  · email: eduardbargues@gmail.com
-  · linkedin: https://www.linkedin.com/in/eduardbargues/
-  · github-profile: https://github.com/EduardBargues
+  - email: eduardbargues@gmail.com
+  - linkedin: https://www.linkedin.com/in/eduardbargues/
+  - github-profile: https://github.com/EduardBargues
 - Open an issue in the same repository: https://github.com/EduardBargues/cicd-template/issues/new
 
 ## How to contribute?
