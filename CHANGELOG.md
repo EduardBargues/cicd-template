@@ -1,3 +1,9 @@
+# :confetti_ball: 0.6.2.1 (2021-07-20T11:30:29.316Z)
+- - -
+## :newspaper: Others
+* refactor:  add manual deploy/configuration to readme (#31)
+- - -
+- - -
 # :confetti_ball: 0.6.2.0 (2021-07-19T17:29:39.108Z)
 - - -
 ## :bug: Fixes
