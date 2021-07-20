@@ -1,8 +1,0 @@
-{
-  "service_name": "replace-me-service_name",
-  "service_version": "replace-me-service_version",
-  "service_group": "replace-me-service_group",
-  "environment": "replace-me-environment",
-  "aws_region": "replace-me-aws_region",
-  "lambda_s3_bucket":"replace-me-lambda_s3_bucket"
-}

@@ -23,17 +23,17 @@ export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
 logAction "GENERAL VARIABLES"
-VERSION=$(echo "$1"|tr '/' '-')
+VERSION=$(jq -r '.version' ./configuration/conf.json)
 logKeyValuePair "version" $VERSION
-ENVIRONMENT=$2
+ENVIRONMENT=$(jq -r '.environment' ./configuration/conf.json)
 logKeyValuePair "environment" $ENVIRONMENT
-GROUP=$(echo "$3"|tr '/' '-')
+GROUP=$(jq -r '.serviceGroup' ./configuration/conf.json)
 logKeyValuePair "service-group" $GROUP
 
 logAction "DOWNLOADING IaC FROM S3 BUCKET"
 iacFileName="terraform-$SERVICE_NAME-$VERSION.zip"
 iacS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$iacFileName"
-deploymentFolder="destroy-$(date "+%Y-%m-%d--%H-%M-%S")"
+deploymentFolder="deployment-$(date "+%Y-%m-%d--%H-%M-%S")"
 mkdir $deploymentFolder
 iacDestinationPath="./$deploymentFolder"
 aws s3 cp $iacS3Origin $iacDestinationPath
@@ -53,18 +53,9 @@ sed -i "s+replace-me-tf-state-key+$STATE_KEY+g" backend.tf
 
 logAction "SETTING UP TERRAFORM VARIABLES"
 tfvars="terraform.tfvars.json"
-cp terraform.tfvars.json.template $tfvars
-sed -i "s/replace-me-service_name/$SERVICE_NAME/g" $tfvars
-sed -i "s/replace-me-service_version/$VERSION/g" $tfvars
-sed -i "s/replace-me-service_group/$GROUP/g" $tfvars
-sed -i "s/replace-me-environment/$ENVIRONMENT/g" $tfvars
-sed -i "s/replace-me-aws_region/$AWS_REGION/g" $tfvars
-sed -i "s/replace-me-lambda_s3_bucket/$BUCKET_NAME/g" terraform.tfvars.json
+confS3Key="s3://$BUCKET_NAME/configurations/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfvars.json"
+aws s3 cp $confS3Key $tfvars
 
-logAction "DESTROYING"
+logAction "PLANNING"
 terraform init
-terraform destroy -auto-approve
-
-logAction "DELETING INFRASTRUCTURE CONFIGURATION"
-confS3Key="configurations/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfvars.json"
-aws s3api delete-object --bucket $BUCKET_NAME --key $confS3Key
+terraform plan

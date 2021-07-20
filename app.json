@@ -1,8 +1,0 @@
-{
-  "base_url": {
-    "value": "http://host.docker.internal:5000"
-  },
-  "diagnostics_endpoint": {
-    "value": "diagnostics"
-  }
-}
