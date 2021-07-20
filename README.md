@@ -47,19 +47,9 @@ Out of the box, the following features are provided:
 
   There is a workflow called _destroy-workflow_ that will erase your infrastructure in the provided aws account. Use it with caution ;) ...
 
-### Up-coming features
+- **manual-deployment/configuration**
 
-- **manual-deployment**
-
-  There is also a workflow called _deploy-workflow_ that allows you to manually deploy a specific service and version to an aws-account by introducing the required inputs.
-
-- **multi-environment configuration**
-
-  There are (at this point) two _main_ branches:
-
-  1. **main**: considered as main. Where all the CI/CD takes place.
-
-  2. **configuration**: this branch is used as a centralized place to configure the service along all the environments and aws accounts.
+  Check out the _configuration_ branch.
 
 ## How to set it up
 
