@@ -14,9 +14,14 @@ logAction()
 ############
 ## SCRIPT ##
 ############
+set -e
 source ./scripts/export-environment-variables.sh
 
-set -e
+CONF_FILE=./configuration/conf.json
+if ! [ -f "$CONF_FILE" ]; then
+    exit 0;
+fi
+
 export AWS_DEFAULT_REGION=$AWS_REGION
 export AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
