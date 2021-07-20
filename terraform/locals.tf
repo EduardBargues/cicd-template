@@ -6,5 +6,6 @@ locals {
     "service-version" = var.service_version
     "service-group"   = var.service_group
     "environment"     = var.environment
+    "potato"          = "yes-please"
   }
 }
