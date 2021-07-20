@@ -58,4 +58,4 @@ aws s3 cp $confS3Key $tfvars
 
 logAction "PLANNING"
 terraform init
-terraform apply -auto-aprove
+terraform apply -auto-approve
