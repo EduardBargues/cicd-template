@@ -18,11 +18,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: marceloprado/has-changed-path@v1
-        id: changed-src
+        id: changed-src-dotnet
         with:
-          paths: ./src
+          paths: ./src-dotnet
       - name: run-unit-tests
-        if: steps.changed-src.outputs.changed == 'true'
+        if: steps.changed-src-dotnet.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/run-unit-tests.sh
@@ -65,14 +65,14 @@ jobs:
         with:
           fetch-depth: 0
       - uses: marceloprado/has-changed-path@v1
-        id: changed-tf-src-tests
+        id: changed-tf-src-dotnet-tests
         with:
-          paths: ./terraform ./src ./tests
+          paths: ./terraform ./src-dotnet ./tests
       - name: dotnet tool install -g Amazon.Lambda.Tools
-        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        if: steps.changed-tf-src-dotnet-tests.outputs.changed == 'true'
         run: dotnet tool install -g Amazon.Lambda.Tools
       - name: upload-branch-artifacts
-        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        if: steps.changed-tf-src-dotnet-tests.outputs.changed == 'true'
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -84,7 +84,7 @@ jobs:
           ./scripts/create-artifact.sh $GITHUB_HEAD_REF
           ./scripts/upload-artifact.sh $GITHUB_HEAD_REF
       - name: deploy-branch
-        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        if: steps.changed-tf-src-dotnet-tests.outputs.changed == 'true'
         env:
           AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_AWS_ACCOUNT_ID }}
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -95,12 +95,12 @@ jobs:
           chmod +x ./scripts/*.sh
           ./scripts/deploy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
       - name: run-e2e-tests
-        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        if: steps.changed-tf-src-dotnet-tests.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/run-e2e-tests.sh
       - name: run-performance-tests
-        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        if: steps.changed-tf-src-dotnet-tests.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/run-performance-tests.sh 200 10 15

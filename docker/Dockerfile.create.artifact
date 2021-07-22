@@ -2,7 +2,7 @@ ARG VERSION=3.1-alpine3.10
 
 FROM mcr.microsoft.com/dotnet/core/sdk:$VERSION AS build
 WORKDIR /build
-COPY /src .
+COPY /src-dotnet .
 RUN dotnet test 
 RUN dotnet publish ./WebApi/WebApi.csproj -c Release -o ./output
 

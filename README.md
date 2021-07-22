@@ -13,7 +13,7 @@ Out of the box, the following features are provided:
 
 - **development**
 
-  A (dummy) service is included in the _src_ folder. The folder includes a functional serverless web-api developed in dotnet-core-3.1 with unit-tests and a '_/diagnostics_' endpoint that returns '_diagnostics-ok_' when called.
+  A (dummy) service is included in the _src-dotnet_ folder. The folder includes a functional serverless web-api developed in dotnet-core-3.1 with unit-tests and a '_/diagnostics_' endpoint that returns '_diagnostics-ok_' when called.
   A folder called "docker" is located in the root of the repo. Inside, you'll find 2 dockerfiles to create artifact and run e2e tests locally. Both dockerfiles are meant to help you better develop your api locally.
 
 - **continuous-integration**
