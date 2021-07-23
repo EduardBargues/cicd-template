@@ -103,5 +103,5 @@ jobs:
         if: steps.changed-tf-src-tests.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
-          #                                  MAX_AVERAGE_RESPONSE_TIME THREADS SECONDS
-          ./scripts/run-performance-tests.sh 200                       10      15
+          #                                  MAX_AVERAGE_RESPONSE_TIME  THREADS  SECONDS
+          ./scripts/run-performance-tests.sh 200                        10       15
