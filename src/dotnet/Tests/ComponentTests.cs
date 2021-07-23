@@ -28,7 +28,7 @@ namespace Tests
             var client = _factory.CreateClient();
 
             // ACT
-            var response = await client.GetAsync("diagnostics");
+            var response = await client.GetAsync("dotnet");
 
             // ASSERT
             Assert.NotNull(response);

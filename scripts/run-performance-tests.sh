@@ -28,8 +28,11 @@ logKeyValuePair "number-of-threads" $THREADS
 SECONDS=$3
 logKeyValuePair "number-of-seconds" $SECONDS
 BASE_URL=$(jq -r '.base_url.value' ./app.json)
-# logKeyValuePair "base-url" $BASE_URL
-DIAGNOSTICS_ENDPOINT=$(jq -r '.diagnostics_endpoint.value' ./app.json)
-# logKeyValuePair "diagnostics-url" $DIAGNOSTICS_ENDPOINT
 
-dotnet run --project ./tests/performance/Performance.Tests.Console.csproj -- $MAX_AVG_RESPONSE_TIME $THREADS $SECONDS $BASE_URL $DIAGNOSTICS_ENDPOINT
+DOTNET_ENDPOINT=$(jq -r '.dotnet_endpoint.value' ./app.json)
+logKeyValuePair "endpoint" $DOTNET_ENDPOINT
+dotnet run --project ./tests/performance/Performance.Tests.Console.csproj -- $MAX_AVG_RESPONSE_TIME $THREADS $SECONDS $BASE_URL $DOTNET_ENDPOINT
+
+NODEJS_ENDPOINT=$(jq -r '.nodejs_endpoint.value' ./app.json)
+logKeyValuePair "endpoint" $NODEJS_ENDPOINT
+dotnet run --project ./tests/performance/Performance.Tests.Console.csproj -- $MAX_AVG_RESPONSE_TIME $THREADS $SECONDS $BASE_URL $NODEJS_ENDPOINT

@@ -10,9 +10,15 @@ describe(`Given application is up and running`, () => {
     console.log(`app: ${JSON.stringify(app, null, 4)}`);
   });
 
-  it(`When calling /diagnostics with no version 
-  Then should return OK-200`, async () => {
-    const response = await when.weInvokeEndpoint(app.diagnosticsEndPoint);
+  it(`When calling /dotnet 
+      Then should return OK-200`, async () => {
+    const response = await when.weInvokeEndpoint(app.dotnetEndpoint);
+    then.responseIsOk(response);
+  });
+
+  it(`When calling /nodejs 
+      Then should return OK-200`, async () => {
+    const response = await when.weInvokeEndpoint(app.nodejsEndpoint);
     then.responseIsOk(response);
   });
 });
