@@ -1,3 +1,9 @@
+# :confetti_ball: 0.8.2.0 (2021-07-23T12:26:46.747Z)
+- - -
+## :bug: Fixes
+* include BUCKET_NAME when deleting artifacts (#37)
+- - -
+- - -
 # :confetti_ball: 0.8.1.0 (2021-07-23T12:23:10.878Z)
 - - -
 ## :bug: Fixes
