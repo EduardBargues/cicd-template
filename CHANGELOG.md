@@ -1,3 +1,11 @@
+# :confetti_ball: 0.8.0.0 (2021-07-23T12:16:43.003Z)
+- - -
+## :hammer: Features
+* introduce pull-request-closed-workflow
+## :newspaper: Others
+* ci:  force deployment
+- - -
+- - -
 # :confetti_ball: 0.7.0.1 (2021-07-23T11:49:05.688Z)
 - - -
 ## :newspaper: Others
