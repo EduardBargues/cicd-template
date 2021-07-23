@@ -1,3 +1,9 @@
+# :confetti_ball: 0.7.0.0 (2021-07-23T11:44:02.247Z)
+- - -
+## :hammer: Features
+* introduce new nodejs lambda (#33)
+- - -
+- - -
 # :confetti_ball: 0.6.2.1 (2021-07-20T11:30:29.316Z)
 - - -
 ## :newspaper: Others
