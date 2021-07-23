@@ -2,7 +2,10 @@
   "base_url": {
     "value": "http://host.docker.internal:5000"
   },
-  "diagnostics_endpoint": {
-    "value": "diagnostics"
+  "dotnet_endpoint": {
+    "value": "dotnet"
+  },
+  "nodejs_endpoint": {
+    "value": "nodejs"
   }
 }

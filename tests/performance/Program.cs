@@ -17,8 +17,8 @@ namespace Performance.Tests.Console
             int threads = int.Parse(args[1]);
             int seconds = int.Parse(args[2]);
             string baseUrl = args[3];
-            string diagnosticsEndpoint = args[4];
-            string url = $"{baseUrl}/{diagnosticsEndpoint}";
+            string endpoint = args[4];
+            string url = $"{baseUrl}/{endpoint}";
 
             double averageResponseTime = await Go(threads, seconds, url);
             System.Console.WriteLine($"    average-response-time [milliseconds]: {averageResponseTime}");

@@ -20,7 +20,7 @@ jobs:
       - uses: marceloprado/has-changed-path@v1
         id: changed-src
         with:
-          paths: ./src
+          paths: ./src/dotnet
       - name: run-unit-tests
         if: steps.changed-src.outputs.changed == 'true'
         run: |
@@ -103,4 +103,5 @@ jobs:
         if: steps.changed-tf-src-tests.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
-          ./scripts/run-performance-tests.sh 200 10 15
+          #                                  MAX_AVERAGE_RESPONSE_TIME THREADS SECONDS
+          ./scripts/run-performance-tests.sh 200                       10      15

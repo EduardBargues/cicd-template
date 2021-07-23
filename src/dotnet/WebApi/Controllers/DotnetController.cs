@@ -9,11 +9,11 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DiagnosticsController : ControllerBase
+    public class DotnetController : ControllerBase
     {
-        private readonly ILogger<DiagnosticsController> _logger;
+        private readonly ILogger<DotnetController> _logger;
 
-        public DiagnosticsController(ILogger<DiagnosticsController> logger)
+        public DotnetController(ILogger<DotnetController> logger)
         {
             _logger = logger;
         }
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         public IActionResult Get()
         {
             _logger.LogInformation($"REQUEST RECEIVED AT [UTC]({DateTime.UtcNow})");
-            return Ok("diagnostics-ok");
+            return Ok("dotnet-ok");
         }
     }
 }

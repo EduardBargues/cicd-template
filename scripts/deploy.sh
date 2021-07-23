@@ -31,7 +31,7 @@ GROUP=$(echo "$3"|tr '/' '-')
 logKeyValuePair "service-group" $GROUP
 
 logAction "DOWNLOADING IaC FROM S3 BUCKET"
-iacFileName="terraform-$SERVICE_NAME-$VERSION.zip"
+iacFileName="$SERVICE_NAME-$VERSION-terraform.zip"
 iacS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$iacFileName"
 deploymentFolder="deployment-$(date "+%Y-%m-%d--%H-%M-%S")"
 mkdir $deploymentFolder
