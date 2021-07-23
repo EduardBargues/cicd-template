@@ -15,6 +15,8 @@ logAction()
 ## SCRIPT ##
 ############
 set -e
+source ./scripts/export-environment-variables.sh
+
 export AWS_DEFAULT_REGION=$AWS_REGION
 export AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
