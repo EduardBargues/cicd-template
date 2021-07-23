@@ -1,3 +1,4 @@
+set -e 
 source ./scripts/export-environment-variables.sh
 
 VERSION=$(echo "$1"|tr '/' '-')
