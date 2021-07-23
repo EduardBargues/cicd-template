@@ -1,7 +1,6 @@
 resource "aws_api_gateway_rest_api" "api" {
   name = "${local.prefix}-api-gateway"
   tags = local.tags
-
   endpoint_configuration {
     types = ["REGIONAL"]
   }
