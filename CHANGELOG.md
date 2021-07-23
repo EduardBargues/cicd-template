@@ -1,3 +1,9 @@
+# :confetti_ball: 0.8.1.0 (2021-07-23T12:23:10.878Z)
+- - -
+## :bug: Fixes
+* include env vars when deleting artifacts (#36)
+- - -
+- - -
 # :confetti_ball: 0.8.0.0 (2021-07-23T12:16:43.003Z)
 - - -
 ## :hammer: Features
