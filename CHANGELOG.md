@@ -1,3 +1,9 @@
+# :confetti_ball: 0.7.0.1 (2021-07-23T11:49:05.688Z)
+- - -
+## :newspaper: Others
+* ci:  force semver (#34)
+- - -
+- - -
 # :confetti_ball: 0.6.2.1 (2021-07-20T11:30:29.316Z)
 - - -
 ## :newspaper: Others
