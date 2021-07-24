@@ -1,3 +1,9 @@
+# :confetti_ball: 0.10.2.0 (2021-07-24T15:36:57.357Z)
+- - -
+## :bug: Fixes
+* forgot prefix 'artifacts' when deleting artifacts (#43)
+- - -
+- - -
 # :confetti_ball: 0.10.1.0 (2021-07-24T15:33:47.042Z)
 - - -
 ## :bug: Fixes
