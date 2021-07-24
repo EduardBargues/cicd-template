@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.TestUtilities" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.13" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.16.1" />
@@ -24,6 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\Function\Function.csproj" />
+  </ItemGroup>
 
 </Project>

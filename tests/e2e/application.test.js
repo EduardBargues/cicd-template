@@ -15,6 +15,12 @@ describe(`Given application is up and running`, () => {
     then.responseIsOk(response);
   });
 
+  it(`When calling /dotnet-function
+      Then should return OK-200`, async () => {
+    const response = await when.weInvokeEndpoint(app.dotnetFunctionEndpoint);
+    then.responseIsOk(response);
+  });
+
   it(`When calling /nodejs 
       Then should return OK-200`, async () => {
     const response = await when.weInvokeEndpoint(app.nodejsEndpoint);
