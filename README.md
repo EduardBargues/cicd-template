@@ -2,7 +2,10 @@
 
 This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds a web api supported by a lambda and developed in aspnetcore 3.1. Useful for teams that look for a functional solution that requires minimum configuration.
 
-- WebApi developed in C# and AspNetCore 3.1 (supported by a lambda).
+- Lambda (as a WebApi) developed in C# and AspNetCore 3.1.
+- Lambda developed in NodeJs.
+- Lambda developed in Python.
+- API with 3 resources (each one pointing to a different lambda).
 - Infrastructure as Code using Terraform 1.x.
 - End to end tests developed in NodeJs with Jest.
 - Docker images are used to be able to run the web api locally without installing anything.

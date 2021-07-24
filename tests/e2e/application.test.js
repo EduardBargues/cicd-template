@@ -7,7 +7,6 @@ describe(`Given application is up and running`, () => {
   let app;
   beforeAll(() => {
     app = given.theApplicationIsUpAndRunning();
-    console.log(`app: ${JSON.stringify(app, null, 4)}`);
   });
 
   it(`When calling /dotnet 

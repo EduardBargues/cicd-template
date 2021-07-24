@@ -83,8 +83,3 @@ resource "aws_iam_role_policy" "cloudwatch" {
   policy = data.aws_iam_policy_document.cw_policy.json
 
 }
-resource "aws_cloudwatch_log_group" "main" {
-  name              = "/aws/apigateway/${aws_api_gateway_rest_api.api.name}"
-  retention_in_days = 3
-  tags              = local.tags
-}
