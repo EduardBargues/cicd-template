@@ -1,3 +1,9 @@
+# :confetti_ball: 0.10.1.0 (2021-07-24T15:33:47.042Z)
+- - -
+## :bug: Fixes
+* check for s3 iac artifact when destroying infrastructure (#42)
+- - -
+- - -
 # :confetti_ball: 0.10.0.1 (2021-07-24T15:25:33.536Z)
 - - -
 ## :newspaper: Others
