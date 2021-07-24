@@ -1,5 +1,4 @@
-# THIS SCRIPT WILL FAIL IF EXECUTED LOCALLY. 
-# ONLY WITH PROPER CREDENTIALS THE ARTIFACTS CAN BE UPLOADED.
+set -e
 source ./scripts/export-environment-variables.sh
 
 VERSION=$(echo "$1"|tr '/' '-')
@@ -8,6 +7,8 @@ export AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
-aws s3 cp "./$SERVICE_NAME-$VERSION-dotnet.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION-dotnet.zip"
-aws s3 cp "./$SERVICE_NAME-$VERSION-terraform.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION-terraform.zip"
-aws s3 cp "./$SERVICE_NAME-$VERSION-nodejs.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION-nodejs.zip"
+declare -a arr=("terraform" "dotnet" "nodejs" "python")
+for CODE in "${arr[@]}"
+do
+    aws s3 cp "./$SERVICE_NAME-$VERSION-$CODE.zip" "s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$SERVICE_NAME-$VERSION-$CODE.zip"
+done

@@ -7,5 +7,8 @@
   },
   "nodejs_endpoint": {
     "value": "nodejs"
+  },
+  "python_endpoint": {
+    "value": "python"
   }
 }

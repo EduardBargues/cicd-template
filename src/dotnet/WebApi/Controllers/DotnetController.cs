@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         public IActionResult Get()
         {
             _logger.LogInformation($"REQUEST RECEIVED AT [UTC]({DateTime.UtcNow})");
-            return Ok("dotnet-ok");
+            return Ok("dotnet-lambda");
         }
     }
 }
