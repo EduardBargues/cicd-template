@@ -21,4 +21,10 @@ describe(`Given application is up and running`, () => {
     const response = await when.weInvokeEndpoint(app.nodejsEndpoint);
     then.responseIsOk(response);
   });
+
+  it(`When calling /python 
+      Then should return OK-200`, async () => {
+    const response = await when.weInvokeEndpoint(app.pythonEndpoint);
+    then.responseIsOk(response);
+  });
 });

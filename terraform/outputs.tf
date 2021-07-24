@@ -8,3 +8,7 @@ output "dotnet_endpoint" {
 output "nodejs_endpoint" {
   value = local.nodejs_endpoint
 }
+
+output "python_endpoint" {
+  value = local.python_endpoint
+}
