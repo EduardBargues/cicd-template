@@ -9,7 +9,9 @@ resource "aws_api_gateway_rest_api" "api" {
 resource "aws_api_gateway_deployment" "api" {
   depends_on = [
     aws_api_gateway_integration.get_dotnet,
+    aws_api_gateway_integration.get_dotnet_function,
     aws_api_gateway_integration.get_nodejs,
+    aws_api_gateway_integration.get_python,
   ]
 
   rest_api_id = aws_api_gateway_rest_api.api.id
@@ -17,11 +19,17 @@ resource "aws_api_gateway_deployment" "api" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.get_dotnet.id,
+      aws_api_gateway_resource.get_dotnet_function.id,
       aws_api_gateway_resource.get_nodejs.id,
+      aws_api_gateway_resource.get_python.id,
       aws_api_gateway_method.get_dotnet.id,
+      aws_api_gateway_method.get_dotnet_function.id,
       aws_api_gateway_method.get_nodejs.id,
+      aws_api_gateway_method.get_python.id,
       aws_api_gateway_integration.get_dotnet.id,
+      aws_api_gateway_integration.get_dotnet_function.id,
       aws_api_gateway_integration.get_nodejs.id,
+      aws_api_gateway_integration.get_python.id,
     ]))
   }
 

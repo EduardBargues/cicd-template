@@ -26,7 +26,7 @@ logAction "GENERAL VARIABLES"
 version=$(echo "$1"|tr '/' '-')
 logKeyValuePair "version" $version
 
-declare -a arr=("terraform" "dotnet" "nodejs" "python")
+declare -a arr=("terraform" "dotnet" "nodejs" "python" "dotnet-function")
 for CODE in "${arr[@]}"
 do
     logAction "DELETING ARTIFACTS FROM S3 BUCKET"

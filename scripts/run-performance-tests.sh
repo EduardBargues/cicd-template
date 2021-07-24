@@ -30,9 +30,10 @@ logKeyValuePair "number-of-seconds" $SECONDS
 BASE_URL=$(jq -r '.base_url.value' ./app.json)
 
 DOTNET_ENDPOINT=$(jq -r '.dotnet_endpoint.value' ./app.json)
+DOTNET_FUNCTION_ENDPOINT=$(jq -r '.dotnet_function_endpoint.value' ./app.json)
 NODEJS_ENDPOINT=$(jq -r '.nodejs_endpoint.value' ./app.json)
 PYTHON_ENDPOINT=$(jq -r '.python_endpoint.value' ./app.json)
-declare -a arr=($DOTNET_ENDPOINT $NODEJS_ENDPOINT $PYTHON_ENDPOINT)
+declare -a arr=($DOTNET_ENDPOINT $DOTNET_FUNCTION_ENDPOINT $NODEJS_ENDPOINT $PYTHON_ENDPOINT)
 for ENDPOINT in "${arr[@]}"
 do
     echo "    ----- -----"
