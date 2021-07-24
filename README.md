@@ -16,35 +16,38 @@ Out of the box, the following features are provided:
 
 - **development**
 
-  A (dummy) service is included in the _src_ folder. The folder includes a functional serverless web-api developed in dotnet-core-3.1 with unit-tests and a '_/diagnostics_' endpoint that returns '_diagnostics-ok_' when called.
-  A folder called "docker" is located in the root of the repo. Inside, you'll find 2 dockerfiles to create artifact and run e2e tests locally. Both dockerfiles are meant to help you better develop your api locally.
+  A (dummy) application is included in the _src_ folder. The folder includes a functional serverless api supported by 4 lambdas. Lambdas are developed in dotnet-core-3.1, nodejs, and python. In the same folder, some unit tests are included. A folder called "docker" is located in the root of the repo. Inside, you'll find 2 dockerfiles to create artifact and run e2e tests locally for the dotnet-web-api application. Both dockerfiles are meant to help you better develop your api locally.
 
 - **continuous-integration**
 
   The repo provides a _scripts_ and _.github/workflows_ folders out of the box with all the necessary scripts and workflows. This definition includes:
 
-  - ensuring that all commits in a pull request follow _conventional-commits_.
+  - ensuring that all commits in a pull request follow [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/).
   - _unit-tests_ pass.
-  - creates and uploads branch artifacts to an s3 bucket from branch
+  - creates and uploads branch artifacts to an s3 bucket.
   - deploys the infrastructure into an aws-account.
   - runs e2e tests.
-  - runs performance tests.
 
 - **continuous-delivery/deployment**
 
   Once a pull request is merged into the **main** branch, the workflow _after-merge-workflow_ is launched. Here, the workflow
 
-  - _semantically versions_ the repository, and tags your merge commit with the new version.
+  - [semantically versions](https://semver.org/) the repository, and tags your merge commit with the new version.
   - It also creates and uploads semver artifacts.
   - deploys to an aws-account automatically.
+  - runs performance tests.
 
 - **End to end testing**
 
-  A folder called _tests_ holds some e2e tests that represent how your client would call the api once deployed. Those tests can be run locally using the scripts inside the _docker_ folder. Include capability to run e2e tests against an already deployed api in a aws account.
+  A folder called _tests_ holds some e2e tests that represent how your client would call the api once deployed. Allows to run e2e tests against an already deployed api in a aws account.
 
 - **Performance e2e testing**
 
-  A folder called _tests_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time.
+  A folder called _tests_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time for all its endpoints.
+
+- **clean-up infra after pull request**
+
+  A workflow called _pull-request-closed-workflow_ will be executed after a pull request is closed (merged or declined). This will ensure no residual infrastructure is left in your AWS account. Good way to avoid extra charge from Amazon :) ...
 
 - **manual-infrastructure-destruction**
 
@@ -59,24 +62,29 @@ Out of the box, the following features are provided:
 This repository is (meant to be) provided as a **_self-contained_** and **_plug-and-run_** solution. Nothing external is required to make it work.
 To start working on your own solution follow those steps:
 
-- Fork the repo to create your own.
-- Clone your new repo and set your root inside the folder.
-- Execute the following commands in your terminal to have the webapi running locally:
+- Fork(or clone) the repo to create your own.
+- Execute the following commands in your terminal to have the dotnet webapi running locally:
 
   > **cd cicd-template/** #move inside the repository
 
   > **chmod +x ./docker/\*.sh** #execution permissions to the .sh files
 
-  > **./docker/run-container-locally.sh** # build aspnetcore image and run webapi in http://localhost:5000/diagnostics
-
-  > **./docker/run-e2e-locally.sh** # in a new terminal! => run e2e tests against the previous container (port 5000)
+  > **./docker/run-container-locally.sh** # build aspnetcore image and run webapi in http://localhost:5000/dotnet
 
 - Setup the following secrets to your (new) repository:
+
   - AWS_ACCESS_KEY: Access key id of the github user.
   - AWS_SECRET_KEY: Secret key of the github user.
   - AWS_ACCOUNT_ID: Aws account id.
   - AWS_REGION: Aws region name.
   - BUCKET_NAME: Name of the s3 bucket where the artifacts, configurations, and terraform state files will be stored.
+
+- Create a pull request from a new branch to the main branch.
+
+  - This will trigger the continuous-integration workflow.
+  - Take into account that all steps in that workflow are conditionally activated based on the folders that have been modified during the pull request.
+
+- Once the pull request is merged to the main branch the continuous-deployment workflow will be activated.
 
 ## Who/How to contact
 
