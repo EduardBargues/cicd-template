@@ -30,7 +30,7 @@ declare -a arr=("terraform" "dotnet" "nodejs" "python")
 for CODE in "${arr[@]}"
 do
     logAction "DELETING ARTIFACTS FROM S3 BUCKET"
-    s3Key="$SERVICE_NAME/$version/$SERVICE_NAME-$version-$CODE.zip"
+    s3Key="artifacts/$SERVICE_NAME/$version/$SERVICE_NAME-$version-$CODE.zip"
     logKeyValuePair "iac-s3-key" $s3Key
     aws s3api delete-object --bucket $BUCKET_NAME --key $s3Key || true
 done
