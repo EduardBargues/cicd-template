@@ -40,3 +40,8 @@ jobs:
           chmod +x ./scripts/*.sh
           VERSION=$(jq -r '.version' version.json)
           ./scripts/deploy.sh $VERSION "dev" "main"
+      - name: run-performance-tests
+        run: |
+          chmod +x ./scripts/*.sh
+          #                                  MAX_AVERAGE_RESPONSE_TIME  THREADS  SECONDS
+          ./scripts/run-performance-tests.sh 250                        5        10
