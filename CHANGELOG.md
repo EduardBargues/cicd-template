@@ -1,3 +1,9 @@
+# :confetti_ball: 0.10.2.1 (2021-07-24T15:43:01.156Z)
+- - -
+## :newspaper: Others
+* ci:  performance tests in main branch (#44)
+- - -
+- - -
 # :confetti_ball: 0.10.2.0 (2021-07-24T15:36:57.357Z)
 - - -
 ## :bug: Fixes
