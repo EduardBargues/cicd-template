@@ -1,3 +1,9 @@
+# :confetti_ball: 0.10.0.0 (2021-07-24T15:06:53.534Z)
+- - -
+## :hammer: Features
+* logs for all lambdas main (#40)
+- - -
+- - -
 # :confetti_ball: 0.9.0.0 (2021-07-24T14:19:36.219Z)
 - - -
 ## :hammer: Features
