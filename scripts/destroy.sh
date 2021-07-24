@@ -36,10 +36,14 @@ iacS3Origin="s3://$BUCKET_NAME/artifacts/$SERVICE_NAME/$VERSION/$iacFileName"
 deploymentFolder="destroy-$(date "+%Y-%m-%d--%H-%M-%S")"
 mkdir $deploymentFolder
 iacDestinationPath="./$deploymentFolder"
-aws s3 cp $iacS3Origin $iacDestinationPath
+aws s3 cp $iacS3Origin $iacDestinationPath || true
+FILE="./$deploymentFolder/$iacFileName"
+if ! [ -f "$FILE" ]; then
+    exit 0
+fi
 
 logAction "UNZIPPING IaC FILE"
-unzip "./$deploymentFolder/$iacFileName" -d "./$deploymentFolder"
+unzip $FILE -d "./$deploymentFolder"
 
 logAction "ENTERING IaC FOLDER FOR DEPLOYMENT"
 tfmFolder="./$deploymentFolder/terraform"
