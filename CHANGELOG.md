@@ -1,3 +1,9 @@
+# :confetti_ball: 0.11.0.1 (2021-07-24T22:14:50.573Z)
+- - -
+## :newspaper: Others
+* docs:  update readme (#46)
+- - -
+- - -
 # :confetti_ball: 0.11.0.0 (2021-07-24T17:31:58.050Z)
 - - -
 ## :hammer: Features
