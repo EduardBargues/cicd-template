@@ -1,3 +1,9 @@
+# :confetti_ball: 0.10.0.1 (2021-07-24T15:25:33.536Z)
+- - -
+## :newspaper: Others
+* refactor:  refactor delete-artifacts.sh (#41)
+- - -
+- - -
 # :confetti_ball: 0.10.0.0 (2021-07-24T15:06:53.534Z)
 - - -
 ## :hammer: Features
