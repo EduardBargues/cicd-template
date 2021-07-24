@@ -1,3 +1,9 @@
+# :confetti_ball: 0.11.0.0 (2021-07-24T17:31:58.050Z)
+- - -
+## :hammer: Features
+* introduce dotnet lambda as a single function (#45)
+- - -
+- - -
 # :confetti_ball: 0.10.2.1 (2021-07-24T15:43:01.156Z)
 - - -
 ## :newspaper: Others
