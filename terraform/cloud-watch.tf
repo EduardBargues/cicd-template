@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "main" {
-  name              = "/aws/apigateway/${aws_api_gateway_rest_api.api.name}"
+  name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.api.id}/${var.environment}"
   retention_in_days = local.logs_retention_in_days
   tags              = local.tags
 }
