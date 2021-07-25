@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -21,7 +24,12 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            _logger.LogInformation($"REQUEST RECEIVED AT [UTC]({DateTime.UtcNow})");
+            var request = (APIGatewayProxyRequest)HttpContext.Items["LambdaRequestObject"];
+            var context = (ILambdaContext)HttpContext.Items["LambdaContext"];
+            _logger.LogInformation($@"DOTNET-FUNCTION LAMBDA EXECUTION
+    request-id: {request?.RequestContext?.RequestId}
+    aws-request-id: {context?.AwsRequestId}");
+
             return Ok("dotnet-lambda");
         }
     }
