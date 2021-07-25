@@ -1,3 +1,12 @@
+# :confetti_ball: 0.12.0.0 (2021-07-25T16:18:41.384Z)
+- - -
+## :hammer: Features
+* include conversation-id in nodejs lambda
+* include conversation-id in python lambda
+* include conversation-id in dotnet-function lambda
+* include conversation-id in dotnet-webapi lambda
+- - -
+- - -
 # :confetti_ball: 0.11.0.1 (2021-07-24T22:14:50.573Z)
 - - -
 ## :newspaper: Others
