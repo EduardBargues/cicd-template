@@ -1,3 +1,9 @@
+# :confetti_ball: 0.14.0.0 (2021-07-25T18:11:54.205Z)
+- - -
+## :hammer: Features
+* include apigw logs (#49)
+- - -
+- - -
 # :confetti_ball: 0.13.0.0 (2021-07-25T17:37:30.996Z)
 - - -
 ## :hammer: Features
