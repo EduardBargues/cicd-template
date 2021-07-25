@@ -2,7 +2,7 @@ import json
 
 
 def handler(event, context):
-    print(f'''NODEJS LAMBDA EXECUTION
+    print(f'''PYTHON LAMBDA EXECUTION
     request-id: {event['requestContext']['requestId']}
     aws-request-id: {context.aws_request_id}''')
     return {

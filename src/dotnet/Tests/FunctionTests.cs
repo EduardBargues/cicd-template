@@ -20,7 +20,8 @@ namespace Function.Tests
             // Invoke the lambda function and confirm the string was upper cased.
             var function = new Function();
             var context = new TestLambdaContext();
-            var response = function.FunctionHandler(new APIGatewayProxyRequest(), context);
+            var request = new APIGatewayProxyRequest() { RequestContext = new APIGatewayProxyRequest.ProxyRequestContext() };
+            var response = function.FunctionHandler(request, context);
 
             Assert.Equal(200, response.StatusCode);
         }
