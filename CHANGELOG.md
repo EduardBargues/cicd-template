@@ -1,3 +1,9 @@
+# :confetti_ball: 0.14.1.1 (2021-07-25T18:29:59.248Z)
+- - -
+## :newspaper: Others
+* refactor:  include example for the script export-aws-credentials (#52)
+- - -
+- - -
 # :confetti_ball: 0.14.1.0 (2021-07-25T18:18:01.999Z)
 - - -
 ## :bug: Fixes
