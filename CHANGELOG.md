@@ -1,3 +1,9 @@
+# :confetti_ball: 0.13.0.0 (2021-07-25T17:37:30.996Z)
+- - -
+## :hammer: Features
+* include update-lambda-code.sh for local development (#48)
+- - -
+- - -
 # :confetti_ball: 0.12.0.0 (2021-07-25T16:18:41.384Z)
 - - -
 ## :hammer: Features
