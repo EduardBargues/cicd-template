@@ -1,3 +1,9 @@
+# :confetti_ball: 0.14.1.0 (2021-07-25T18:18:01.999Z)
+- - -
+## :bug: Fixes
+* retention days to 1 for dotnet-function lambda (#50)
+- - -
+- - -
 # :confetti_ball: 0.14.0.0 (2021-07-25T18:11:54.205Z)
 - - -
 ## :hammer: Features
