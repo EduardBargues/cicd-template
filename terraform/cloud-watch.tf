@@ -10,6 +10,12 @@ resource "aws_cloudwatch_log_group" "dotnet" {
   tags              = local.tags
 }
 
+resource "aws_cloudwatch_log_group" "dotnet_function" {
+  name              = "/aws/lambda/${aws_lambda_function.lambda_dotnet_function.function_name}"
+  retention_in_days = local.logs_retention_in_days
+  tags              = local.tags
+}
+
 resource "aws_cloudwatch_log_group" "nodejs" {
   name              = "/aws/lambda/${aws_lambda_function.lambda_nodejs.function_name}"
   retention_in_days = local.logs_retention_in_days
