@@ -1,3 +1,9 @@
+# :confetti_ball: 0.14.1.2 (2021-07-29T13:40:43.364Z)
+- - -
+## :newspaper: Others
+* test:  force deployment (#53)
+- - -
+- - -
 # :confetti_ball: 0.14.1.1 (2021-07-25T18:29:59.248Z)
 - - -
 ## :newspaper: Others
