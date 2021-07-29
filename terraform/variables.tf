@@ -19,6 +19,7 @@ variable "aws_region" {
   description = "aws region"
   sensitive   = true
 }
+
 variable "lambda_s3_bucket" {
   type        = string
   description = "name of the s3 bucket that holds the lambda artifacts"
