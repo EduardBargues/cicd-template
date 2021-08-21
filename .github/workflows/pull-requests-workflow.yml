@@ -84,8 +84,19 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/deploy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
+      - name: run-first-call-tests
+        if: steps.changed-tf-src-tests.outputs.changed == 'true'
+        run: |
+          chmod +x ./scripts/*.sh
+          #                                             MAX_RESPONSE_TIME
+          ./scripts/run-performance-first-call-tests.sh 4000
       - name: run-e2e-tests
         if: steps.changed-tf-src-tests.outputs.changed == 'true'
         run: |
           chmod +x ./scripts/*.sh
           ./scripts/run-e2e-tests.sh
+      - name: run-performance-tests
+        run: |
+          chmod +x ./scripts/*.sh
+          #                                  MAX_AVERAGE_RESPONSE_TIME  THREADS  SECONDS
+          ./scripts/run-performance-tests.sh 150                        5        10

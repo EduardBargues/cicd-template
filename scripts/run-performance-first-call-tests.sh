@@ -20,13 +20,9 @@ logError()
 ## SCRIPT ##
 ############
 set -e
-logAction "RUNNING PERFORMANCE TESTS"
-MAX_AVG_RESPONSE_TIME=$1
-logKeyValuePair "max-average-response-time" $MAX_AVG_RESPONSE_TIME
-THREADS=$2
-logKeyValuePair "number-of-threads" $THREADS
-SECONDS=$3
-logKeyValuePair "number-of-seconds" $SECONDS
+logAction "RUNNING COLD START TESTS"
+MAX_RESPONSE_TIME=$1
+logKeyValuePair "max-response-time" $MAX_RESPONSE_TIME
 BASE_URL=$(jq -r '.base_url.value' ./app.json)
 
 DOTNET_ENDPOINT=$(jq -r '.dotnet_endpoint.value' ./app.json)
@@ -38,5 +34,5 @@ for ENDPOINT in "${arr[@]}"
 do
     echo "    ----- -----"
     logKeyValuePair "endpoint" $ENDPOINT
-    dotnet run --project ./tests/performance/average/Performance.Average.Tests.Console.csproj -- $MAX_AVG_RESPONSE_TIME $THREADS $SECONDS $BASE_URL $ENDPOINT
+    dotnet run --project ./tests/performance/first-call/Performance.FirstCall.Tests.Console.csproj -- $MAX_RESPONSE_TIME $BASE_URL $ENDPOINT
 done

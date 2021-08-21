@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Performance.Tests.Console
+namespace Performance.Average.Tests.Console
 {
     class Program
     {
