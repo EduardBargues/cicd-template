@@ -1,3 +1,9 @@
+# :confetti_ball: 0.15.0.0 (2021-08-21T17:16:02.454Z)
+- - -
+## :hammer: Features
+* include first call performance tests (#55)
+- - -
+- - -
 # :confetti_ball: 0.14.1.2 (2021-07-29T13:40:43.364Z)
 - - -
 ## :newspaper: Others
