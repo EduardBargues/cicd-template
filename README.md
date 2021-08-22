@@ -1,13 +1,15 @@
 # CICD-TEMPLATE
 
-This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds a web api supported by a lambda and developed in aspnetcore 3.1. Useful for teams that look for a functional solution that requires minimum configuration.
+This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds an API supported by an APIGATEWAY developed in dotnet core 3.1, nodejs and python. Useful for teams that look for a functional solution that requires minimum configuration.
 
 - Lambda (as a WebApi) developed in C# and AspNetCore 3.1.
+- Lambda developed in C# and dotnet core 3.1.
 - Lambda developed in NodeJs.
 - Lambda developed in Python.
 - API with 3 resources (each one pointing to a different lambda).
 - Infrastructure as Code using Terraform 1.x.
 - End to end tests developed in NodeJs with Jest.
+- Performance tests developed in dotnet as a console application.
 - Docker images are used to be able to run the web api locally without installing anything.
 
 ## Features this repo provides
@@ -27,6 +29,8 @@ Out of the box, the following features are provided:
   - creates and uploads branch artifacts to an s3 bucket.
   - deploys the infrastructure into an aws-account.
   - runs e2e tests.
+  - runs performance tests.
+  - runs specific tests to ensure lambdas' coldstarts are under control.
 
 - **continuous-delivery/deployment**
 
@@ -35,15 +39,28 @@ Out of the box, the following features are provided:
   - [semantically versions](https://semver.org/) the repository, and tags your merge commit with the new version.
   - It also creates and uploads semver artifacts.
   - deploys to an aws-account automatically.
-  - runs performance tests.
 
-- **End to end testing**
+- **Tests**
 
-  A folder called _tests_ holds some e2e tests that represent how your client would call the api once deployed. Allows to run e2e tests against an already deployed api in a aws account.
+  - **Unit testing**
 
-- **Performance e2e testing**
+    Inside the _src/dotnet_ folder there is a folder called _Tests_ where some unit tests are developed using [xUnit](https://xunit.net/) and [Moq](https://github.com/moq).
 
-  A folder called _tests_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time for all its endpoints.
+  - **End to end testing**
+
+    The folder _tests/e2e_ holds some e2e tests that represent how your client would call the api once deployed. Allows to run e2e tests against an already deployed api in a aws account.
+
+  - **Performance testing**
+
+    The folder _tests/performance/average_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time for all its endpoints using several threads.
+
+  - **First response time**
+
+    The folder _tests/performance/first-call_ holds some _performance_ tests as a dotnet core 3.1 console application that calls each endpoint one single time and computes the response time. Usefull to measure the impact of your lambdas' coldstart.
+
+  - **Deployment monitoring**
+
+    The folder _tests/monitoring_ contains a script in javascript that will call the API's endpoints during a period of time. This is useful to monitor potential downtimes during deployments. For this POC, the script runs during deployments from the main branch.
 
 - **clean-up infra after pull request**
 

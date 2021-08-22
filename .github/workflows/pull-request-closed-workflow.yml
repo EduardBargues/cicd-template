@@ -18,7 +18,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           chmod +x ./scripts/*.sh
-          ./scripts/destroy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
+          ./scripts/tfm-destroy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
       - name: remove-artifacts
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}

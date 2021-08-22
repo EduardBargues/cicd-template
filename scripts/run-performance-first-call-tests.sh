@@ -25,10 +25,10 @@ MAX_RESPONSE_TIME=$1
 logKeyValuePair "max-response-time" $MAX_RESPONSE_TIME
 BASE_URL=$(jq -r '.base_url.value' ./app.json)
 
-DOTNET_ENDPOINT=$(jq -r '.dotnet_endpoint.value' ./app.json)
-DOTNET_FUNCTION_ENDPOINT=$(jq -r '.dotnet_function_endpoint.value' ./app.json)
-NODEJS_ENDPOINT=$(jq -r '.nodejs_endpoint.value' ./app.json)
-PYTHON_ENDPOINT=$(jq -r '.python_endpoint.value' ./app.json)
+DOTNET_ENDPOINT=$(jq -r '.endpoints.value.dotnet_endpoint' ./app.json)
+DOTNET_FUNCTION_ENDPOINT=$(jq -r '.endpoints.value.dotnet_function_endpoint' ./app.json)
+NODEJS_ENDPOINT=$(jq -r '.endpoints.value.nodejs_endpoint' ./app.json)
+PYTHON_ENDPOINT=$(jq -r '.endpoints.value.python_endpoint' ./app.json)
 declare -a arr=($DOTNET_ENDPOINT $DOTNET_FUNCTION_ENDPOINT $NODEJS_ENDPOINT $PYTHON_ENDPOINT)
 for ENDPOINT in "${arr[@]}"
 do

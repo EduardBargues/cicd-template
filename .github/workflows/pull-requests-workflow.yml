@@ -83,7 +83,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           chmod +x ./scripts/*.sh
-          ./scripts/deploy.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
+          ./scripts/tfm-apply.sh $GITHUB_HEAD_REF "dev" $GITHUB_HEAD_REF
       - name: run-first-call-tests
         if: steps.changed-tf-src-tests.outputs.changed == 'true'
         run: |
@@ -99,4 +99,4 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           #                                  MAX_AVERAGE_RESPONSE_TIME  THREADS  SECONDS
-          ./scripts/run-performance-tests.sh 150                        5        10
+          ./scripts/run-performance-tests.sh 200                        5        10

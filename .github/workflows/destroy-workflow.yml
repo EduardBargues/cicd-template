@@ -27,4 +27,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           chmod +x ./scripts/*.sh
-          ./scripts/destroy.sh ${{ github.event.inputs.version }} ${{ github.event.inputs.environment }} ${{ github.event.inputs.group }}
+          ./scripts/tfm-destroy.sh ${{ github.event.inputs.version }} ${{ github.event.inputs.environment }} ${{ github.event.inputs.group }}

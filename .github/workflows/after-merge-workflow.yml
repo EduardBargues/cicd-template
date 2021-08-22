@@ -3,12 +3,12 @@ on:
   push:
     branches: [main]
 jobs:
-  continuous-deployment:
+  semver:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: semver & changelog
         run: |
           date > generated.txt
@@ -29,6 +29,34 @@ jobs:
           VERSION=$(jq -r '.version' version.json)
           ./scripts/create-artifact.sh $VERSION
           ./scripts/upload-artifact.sh $VERSION
+  artifact-creation:
+    needs: semver
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: dotnet tool install -g Amazon.Lambda.Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+      - name: upload-semver-artifacts
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          chmod +x ./scripts/*.sh
+          VERSION=$(jq -r '.version' version.json)
+          ./scripts/create-artifact.sh $VERSION
+          ./scripts/upload-artifact.sh $VERSION
+  deployment:
+    needs: artifact-creation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
       - name: deploy-semver-artifacts
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -39,4 +67,21 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           VERSION=$(jq -r '.version' version.json)
-          ./scripts/deploy.sh $VERSION "dev" "main"
+          ./scripts/tfm-apply.sh $VERSION "dev" "main"
+  deployment-monitoring:
+    needs: artifact-creation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: deployment-monitoring
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/run-monitoring-tests.sh
