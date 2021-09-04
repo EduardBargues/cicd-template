@@ -1,3 +1,9 @@
+# :confetti_ball: 0.15.1.0 (2021-09-04T19:49:12.228Z)
+- - -
+## :bug: Fixes
+* fix clean-up and cd workflows (#60)
+- - -
+- - -
 # :confetti_ball: 0.15.0.0 (2021-08-21T17:16:02.454Z)
 - - -
 ## :hammer: Features
