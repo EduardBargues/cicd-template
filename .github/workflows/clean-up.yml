@@ -47,5 +47,5 @@ jobs:
           fetch-depth: 1
       - name: remove-artifacts
         run: |
-          chmod +x ./scripts/*.sh
+          chmod +x -R ./scripts
           ./scripts/artifacts/delete-artifacts.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME
