@@ -1,8 +1,3 @@
-data "aws_s3_bucket_object" "lambda_dotnet" {
-  bucket = var.lambda_s3_bucket
-  key    = local.lambda_s3_key_dotnet
-}
-
 resource "aws_lambda_function" "lambda_dotnet" {
   function_name     = "${local.prefix_dotnet_webapi}-lambda"
   s3_bucket         = var.lambda_s3_bucket

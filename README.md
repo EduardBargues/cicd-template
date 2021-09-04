@@ -6,10 +6,10 @@ This repo is meant to provide an initial template for teams so they can fork it 
 - Lambda developed in C# and dotnet core 3.1.
 - Lambda developed in NodeJs.
 - Lambda developed in Python.
-- API with 3 resources (each one pointing to a different lambda).
+- API with 4 resources (each one pointing to a different lambda).
 - Infrastructure as Code using Terraform 1.x.
 - End to end tests developed in NodeJs with Jest.
-- Performance tests developed in dotnet as a console application.
+- Performance tests developed with [k6](https://k6.io/).
 - Docker images are used to be able to run the web api locally without installing anything.
 
 ## Features this repo provides
@@ -52,7 +52,7 @@ Out of the box, the following features are provided:
 
   - **Performance testing**
 
-    The folder _tests/performance/average_ holds some _performance_ tests as a dotnet core 3.1 console application that "attacks" your deployed API and computes the average response time for all its endpoints using several threads.
+    The folder _tests/performance/average_ holds some _performance_ tests as a .js script that "attacks" your deployed API and computes the average response time for all its endpoints using several threads.
 
   - **First response time**
 

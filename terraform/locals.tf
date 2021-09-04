@@ -13,6 +13,7 @@ locals {
   nodejs_endpoint               = "nodejs"
   python_endpoint               = "python"
   logs_retention_in_days        = 1
+  task_launch_type              = "FARGATE"
   tags = {
     "service-name"    = var.service_name
     "service-version" = var.service_version

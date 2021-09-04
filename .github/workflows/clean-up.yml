@@ -9,6 +9,7 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
   SERVICE_NAME: "service"
+  ECR_NAME: "service-ecr"
 jobs:
   download-branch-artifacts:
     runs-on: ubuntu-latest
@@ -39,15 +40,29 @@ jobs:
       - name: destroy
         run: |
           chmod +x -R ./scripts
-          ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
-  remove-artifacts:
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+  remove-branch-artifacts:
     needs: destroy-infrastructure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: remove-artifacts
+      - name: remove-branch-artifacts
         run: |
           chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           ./scripts/artifacts/delete-artifacts.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME
+  remove-branch-ecr-tag:
+    needs: destroy-infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: remove-branch-ecr-tag
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/aws/ecr/remove-image-tag-from-ecr.sh $ECR_NAME $GITHUB_HEAD_REF
