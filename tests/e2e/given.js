@@ -1,4 +1,4 @@
-const appFile = require("../app.json");
+const appFile = require("./app.json");
 
 const theApplicationIsUpAndRunning = () => {
   const app = {
