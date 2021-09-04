@@ -1,0 +1,30 @@
+name: destroy
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "service-version (1.2.3.4, feature/*, ...)"
+        required: true
+      environment:
+        description: "environment (dev, int, tst, acc, prd)"
+        required: true
+      group:
+        description: "service group that will be deleted"
+        required: true
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: destroy
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/tfm-destroy.sh ${{ github.event.inputs.version }} ${{ github.event.inputs.environment }} ${{ github.event.inputs.group }}

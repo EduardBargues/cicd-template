@@ -1,0 +1,51 @@
+name: after-pull-request-closed
+on:
+  pull_request:
+    types: [closed]
+env:
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+  SERVICE_NAME: "service"
+jobs:
+  download-branch-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: download-branch-artifacts
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/download-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME terraform deployment-folder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+  destroy-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+      - name: destroy
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+  remove-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: remove-artifacts
+        run: |
+          chmod +x ./scripts/*.sh
+          ./scripts/artifacts/delete-artifacts.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME

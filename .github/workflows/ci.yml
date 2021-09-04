@@ -1,0 +1,223 @@
+name: continuous-integration
+on:
+  pull_request:
+    branches: ["main"]
+env:
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+  SERVICE_NAME: "service"
+
+jobs:
+  check-conventional-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: ensure-conventional-commits
+        run: node ./scripts/git/ensure-conventional-commits.js $GITHUB_BASE_REF $GITHUB_HEAD_REF
+  build-dotnet-webapi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: build-dotnet-webapi
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/builds/dotnet/build-dotnet-app.sh src/dotnet
+  run-dotnet-webapi-unit-tests:
+    needs: build-dotnet-webapi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: run-dotnet-webapi-unit-tests
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/tests/dotnet/run-dotnet-tests.sh src/dotnet
+  validate-iac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: validate-terraform
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-validate.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME
+  upload-iac-artifact:
+    needs: validate-iac
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: create-iac-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/create-iac-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME terraform $BUCKET_NAME
+  upload-dotnet-webapi-lambda-artifact:
+    needs: run-dotnet-webapi-unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: dotnet tool install -g Amazon.Lambda.Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+      - name: create-dotnet-webapi-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/WebApi dotnet-webapi netcoreapp3.1 $BUCKET_NAME
+  upload-dotnet-lambda-artifact:
+    needs: run-dotnet-webapi-unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: dotnet tool install -g Amazon.Lambda.Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+      - name: create-dotnet-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/Function dotnet-function netcoreapp3.1 $BUCKET_NAME
+  upload-nodejs-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: create-nodejs-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/nodejs/create-nodejs-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/nodejs $BUCKET_NAME
+  upload-python-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: create-python-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/python/create-python-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/python $BUCKET_NAME
+  download-branch-artifacts:
+    needs:
+      [
+        upload-iac-artifact,
+        upload-dotnet-webapi-lambda-artifact,
+        upload-dotnet-lambda-artifact,
+        upload-nodejs-lambda-artifact,
+        upload-python-lambda-artifact,
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: download-branch-artifacts
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/download-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME terraform deployment-folder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+  plan-branch-deployment:
+    needs: download-branch-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+      - name: plan-branch-deployment
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-plan.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+  deploy-branch:
+    needs: plan-branch-deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+      - name: deploy-branch
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-apply.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder output-folder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+  run-performance-tests:
+    needs: deploy-branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+      - name: copy-app-file-to-tests-folder
+        run: |
+          cp ./output-folder/app.json ./tests/performance/app.json
+      - name: run-performance-tests
+        uses: k6io/action@v0.1
+        with:
+          filename: tests/performance/performance-tests.js
+          flags: --vus 50 --duration 10s
+  # INFO: E2E TESTS GO AFTER PERFORMANCE TESTS
+  #       TO TAKE INTO ACCOUNT LAMBDAS' COLDSTARTS
+  run-e2e-tests:
+    needs: run-performance-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+      - name: run-e2e-tests
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/tests/js/run-js-tests.sh tests/e2e e2e output-folder/app.json
+      # - name: run-first-call-tests
+      #   if: steps.changed-tf-src-tests.outputs.changed == 'true'
+      #   run: |
+      #     chmod +x ./scripts/*.sh
+      #     #                                             MAX_RESPONSE_TIME
+      #     ./scripts/run-performance-first-call-tests.sh 4000
+      # - name: run-e2e-tests
+      #   if: steps.changed-tf-src-tests.outputs.changed == 'true'
+      #   run: |
+      #     chmod +x ./scripts/*.sh
+      #     ./scripts/run-e2e-tests.sh
+      # - name: run-performance-tests
+      #   run: |
+      #     chmod +x ./scripts/*.sh
+      #     #                                  MAX_AVERAGE_RESPONSE_TIME  THREADS  SECONDS
+      #     ./scripts/run-performance-tests.sh 200                        5        10

@@ -1,14 +1,25 @@
 {
   "base_url": {
-    "value": "http://host.docker.internal:5000"
+    "sensitive": true,
+    "type": "string",
+    "value": "https://your-url-here"
   },
-  "dotnet_endpoint": {
-    "value": "dotnet"
-  },
-  "nodejs_endpoint": {
-    "value": "nodejs"
-  },
-  "python_endpoint": {
-    "value": "python"
+  "endpoints": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "dotnet_endpoint": "string",
+        "dotnet_function_endpoint": "string",
+        "nodejs_endpoint": "string",
+        "python_endpoint": "string"
+      }
+    ],
+    "value": {
+      "dotnet_endpoint": "dotnet",
+      "dotnet_function_endpoint": "dotnet-function",
+      "nodejs_endpoint": "nodejs",
+      "python_endpoint": "python"
+    }
   }
 }
