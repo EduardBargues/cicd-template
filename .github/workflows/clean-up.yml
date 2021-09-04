@@ -26,6 +26,7 @@ jobs:
           name: deployment-folder
           path: deployment-folder
   destroy-infrastructure:
+    needs: download-branch-artifacts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -40,6 +41,7 @@ jobs:
           chmod +x -R ./scripts
           ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
   remove-artifacts:
+    needs: destroy-infrastructure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
