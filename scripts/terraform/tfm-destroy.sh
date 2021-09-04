@@ -36,7 +36,7 @@ sed -i "s/replace-me-lambda_s3_bucket/$BUCKET_NAME/g" terraform.tfvars.json
 terraform init
 terraform destroy -auto-approve
 
-logAction "DELETING INFRASTRUCTURE CONFIGURATION"
+log_action "DELETING INFRASTRUCTURE CONFIGURATION"
 confS3Key="configurations/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfvars.json"
 aws s3api delete-object --bucket $BUCKET_NAME --key $confS3Key
 
