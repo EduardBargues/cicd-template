@@ -1,3 +1,9 @@
+# :confetti_ball: 0.16.2.0 (2021-09-05T00:35:21.172Z)
+- - -
+## :bug: Fixes
+* correct tfm-destroy.sh script
+- - -
+- - -
 # :confetti_ball: 0.16.1.0 (2021-09-05T00:31:39.687Z)
 - - -
 ## :bug: Fixes
