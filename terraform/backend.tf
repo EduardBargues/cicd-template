@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "replace-me-bucket-name"
-    region = "replace-me-aws-region"
-    key    = "replace-me-tf-state-key"
+    bucket = "main-413901771600"
+    region = "eu-west-1"
+    key    = "infra-states/dev/service/feature-ecs/service-dev-feature-ecs.tfstate"
   }
 }

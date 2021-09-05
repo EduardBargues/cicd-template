@@ -15,8 +15,7 @@
 *.terraform.lock.hcl
 .vscode
 package-lock.json
-export-aws-credentials.sh
-
+terraform.tfvars.json.local-dev
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

@@ -9,9 +9,9 @@ describe(`GIVEN application is up and running`, () => {
     app = given.theApplicationIsUpAndRunning();
   });
 
-  describe("WHEN calling get - /dotnet", () => {
+  describe("WHEN calling get - /dotnet-webapi", () => {
     it(`THEN should return OK-200`, async () => {
-      const response = await when.weInvokeEndpoint(app.dotnetEndpoint);
+      const response = await when.weInvokeEndpoint(app.dotnetWebApiEndpoint);
       then.responseIsOk(response);
     });
   });
@@ -23,16 +23,22 @@ describe(`GIVEN application is up and running`, () => {
     });
   });
 
-  describe("WHEN calling /nodejs", () => {
+  describe("WHEN calling /nodejs-function", () => {
     it(`THEN should return OK-200`, async () => {
-      const response = await when.weInvokeEndpoint(app.nodejsEndpoint);
+      const response = await when.weInvokeEndpoint(app.nodejsFunctionEndpoint);
       then.responseIsOk(response);
     });
   });
+  // describe("WHEN calling /nodejs-server", () => {
+  //   it(`THEN should return OK-200`, async () => {
+  //     const response = await when.weInvokeEndpoint(app.nodejsServerEndpoint);
+  //     then.responseIsOk(response);
+  //   });
+  // });
 
-  describe("WHEN calling /python", () => {
+  describe("WHEN calling /python-function", () => {
     it(`THEN should return OK-200`, async () => {
-      const response = await when.weInvokeEndpoint(app.pythonEndpoint);
+      const response = await when.weInvokeEndpoint(app.pythonFunctionEndpoint);
       then.responseIsOk(response);
     });
   });

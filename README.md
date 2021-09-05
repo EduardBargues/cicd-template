@@ -56,6 +56,7 @@ Out of the box, the following features are provided:
 
   - **First response time**
 
+<<<<<<< Updated upstream
     The folder _tests/performance/first-call_ holds some _performance_ tests as a dotnet core 3.1 console application that calls each endpoint one single time and computes the response time. Usefull to measure the impact of your lambdas' coldstart.
 
   - **Deployment monitoring**
@@ -73,6 +74,21 @@ Out of the box, the following features are provided:
 - **manual-deployment/configuration**
 
   Check out the _configuration_ branch.
+=======
+- **manual-deployment/configurations**
+
+  There is also a workflow called _deploy-workflow_ that allows you to manually deploy a specific version to an aws-account by introducing the required inputs. Those inputs are:
+
+  - service-version: version of the service to deploy.
+  - environment: where to deploy it.
+  - service-group: group to be deployed or updated.
+  - s3-bucket-name: bucket where the configuration is stored.
+  - s3-bucket-key: key of the tfvars file that holds the configuration.
+
+### Up-coming features
+
+- NOTHING PLANNED.
+>>>>>>> Stashed changes
 
 ## How to set it up
 

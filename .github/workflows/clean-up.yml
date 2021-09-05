@@ -41,7 +41,7 @@ jobs:
         run: |
           chmod +x -R ./scripts
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-          ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+          ./scripts/terraform/tfm-destroy.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $ECR_NAME $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
   remove-branch-artifacts:
     needs: destroy-infrastructure
     runs-on: ubuntu-latest

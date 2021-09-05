@@ -4,10 +4,5 @@ output "base_url" {
 }
 
 output "endpoints" {
-  value = {
-    dotnet_endpoint : local.dotnet_endpoint
-    dotnet_function_endpoint : local.dotnet_function_endpoint
-    nodejs_endpoint : local.nodejs_endpoint
-    python_endpoint : local.python_endpoint
-  }
+  value = local.endpoints
 }
