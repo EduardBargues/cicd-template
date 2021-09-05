@@ -271,7 +271,7 @@ jobs:
         uses: k6io/action@v0.1
         with:
           filename: tests/performance/performance-tests.js
-          flags: --vus 50 --duration 10s
+          flags: --vus 50 --duration 30s
   # INFO: E2E TESTS GO AFTER PERFORMANCE TESTS
   #       TO TAKE INTO ACCOUNT LAMBDAS' COLDSTARTS
   run-e2e-tests:
