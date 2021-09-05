@@ -65,4 +65,4 @@ jobs:
         run: |
           chmod +x -R ./scripts
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-          ./scripts/aws/ecr/remove-image-tag-from-ecr.sh $ECR_NAME $GITHUB_HEAD_REF
+          ./scripts/aws/ecr/remove-image-tag-from-ecr.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION
