@@ -19,7 +19,20 @@ variable "aws_region" {
   description = "aws region"
   sensitive   = true
 }
+variable "aws_account_id" {
+  type        = string
+  description = "aws account id"
+  sensitive   = true
+}
+variable "ecr_name" {
+  type        = string
+  description = "elastic container repository name"
+}
+variable "docker_image_tag" {
+  type        = string
+  description = "docker image tag"
 
+}
 variable "lambda_s3_bucket" {
   type        = string
   description = "name of the s3 bucket that holds the lambda artifacts"

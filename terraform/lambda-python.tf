@@ -1,8 +1,3 @@
-data "aws_s3_bucket_object" "lambda_python" {
-  bucket = var.lambda_s3_bucket
-  key    = local.lambda_s3_key_python
-}
-
 resource "aws_lambda_function" "lambda_python" {
   function_name     = "${local.prefix_python}-lambda"
   s3_bucket         = var.lambda_s3_bucket

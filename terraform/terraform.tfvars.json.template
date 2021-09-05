@@ -4,5 +4,8 @@
   "service_group": "replace-me-service_group",
   "environment": "replace-me-environment",
   "aws_region": "replace-me-aws_region",
+  "aws_account_id": "replace-me-aws_account_id",
+  "ecr_name": "replace-me-ecr_name",
+  "docker_image_tag": "replace-me-docker_image_tag",
   "lambda_s3_bucket":"replace-me-lambda_s3_bucket"
 }
