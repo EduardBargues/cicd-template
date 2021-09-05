@@ -1,3 +1,9 @@
+# :confetti_ball: 0.16.1.0 (2021-09-05T00:31:39.687Z)
+- - -
+## :bug: Fixes
+* correct typo in tfm-destroy.sh script (#63)
+- - -
+- - -
 # :confetti_ball: 0.16.0.0 (2021-09-05T00:23:29.478Z)
 - - -
 ## :hammer: Features
