@@ -18,7 +18,7 @@ log_key_value_pair "bucket-name" $BUCKET_NAME
 DEPLOYMENT_FOLDER=$7
 log_key_value_pair "deployment-folder" $DEPLOYMENT_FOLDER
 
-mkdir "$WORKING_FOLDER/$OUTPUT_FOLDER"
+mkdir "$WORKING_FOLDER/$DEPLOYMENT_FOLDER"
 cd $WORKING_FOLDER/$DEPLOYMENT_FOLDER/terraform
 
 log_action "SETTING UP TERRAFORM BACKEND"
