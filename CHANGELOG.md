@@ -1,3 +1,9 @@
+# :confetti_ball: 0.16.0.0 (2021-09-05T00:23:29.478Z)
+- - -
+## :hammer: Features
+* introduce fargate service (#62)
+- - -
+- - -
 # :confetti_ball: 0.15.2.0 (2021-09-04T19:54:08.217Z)
 - - -
 ## :bug: Fixes
