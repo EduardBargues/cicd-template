@@ -50,18 +50,15 @@ module "get_python_function" {
     aws_api_gateway_rest_api.api
   ]
 }
-# module "get_nodejs_server" {
-#   source = "./modules/apigw-integrations/vpc-link"
+module "get_nodejs_server" {
+  source = "./modules/apigw-integrations/http"
 
-#   name                  = local.prefixes.nodejs_server
-#   rest_api_name         = aws_api_gateway_rest_api.api.name
-#   endpoint_relative_url = local.endpoints.nodejs_server
-#   http_method           = "GET"
-#   nlb_dns_name          = module.ecs_service.nlb_dns_name
-#   nlb_arn               = module.ecs_service.nlb_arn
-#   app_port              = var.fargate_app_port
-#   tags                  = local.tags
-#   depends_on = [
-#     aws_api_gateway_rest_api.api
-#   ]
-# }
+  rest_api_name            = aws_api_gateway_rest_api.api.name
+  endpoint_relative_url    = local.endpoints.nodejs_server
+  http_method              = "GET"
+  integration_endpoint_url = "http://${module.ecs.alb_hostname}:${var.app_port}/${local.endpoints.nodejs_server}"
+
+  depends_on = [
+    aws_api_gateway_rest_api.api
+  ]
+}

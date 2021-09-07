@@ -3,7 +3,7 @@ data "aws_s3_bucket_object" "lambda_dotnet_webapi" {
   key    = local.lambdas.s3_key_dotnet_webapi
 }
 resource "aws_lambda_function" "lambda_dotnet_webapi" {
-  function_name     = "${local.prefixes.dotnet_webapi}-lambda"
+  function_name     = "${local.prefix}-dotnet-webapi"
   s3_bucket         = var.lambda_s3_bucket
   s3_key            = data.aws_s3_bucket_object.lambda_dotnet_webapi.key
   s3_object_version = data.aws_s3_bucket_object.lambda_dotnet_webapi.version_id
@@ -16,7 +16,7 @@ resource "aws_lambda_function" "lambda_dotnet_webapi" {
 }
 
 resource "aws_iam_role" "lambda_dotnet_webapi" {
-  name = "${local.prefixes.dotnet_webapi}-iam-role"
+  name = "${local.prefix}-dotnet-webapi"
 
   assume_role_policy = <<EOF
 {

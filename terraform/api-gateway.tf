@@ -11,7 +11,7 @@ resource "aws_api_gateway_deployment" "api" {
     module.get_dotnet_webapi,
     module.get_dotnet_function,
     module.get_nodejs_function,
-    # module.get_nodejs_server,
+    module.get_nodejs_server,
     module.get_python_function,
   ]
 
@@ -22,17 +22,17 @@ resource "aws_api_gateway_deployment" "api" {
       module.get_dotnet_webapi.resource_id,
       module.get_dotnet_function.resource_id,
       module.get_nodejs_function.resource_id,
-      # module.get_nodejs_server.resource_id,
+      module.get_nodejs_server.resource_id,
       module.get_python_function.resource_id,
       module.get_dotnet_webapi.method_id,
       module.get_dotnet_function.method_id,
       module.get_nodejs_function.method_id,
-      # module.get_nodejs_server.method_id,
+      module.get_nodejs_server.method_id,
       module.get_python_function.method_id,
       module.get_dotnet_webapi.integration_id,
       module.get_dotnet_function.integration_id,
       module.get_nodejs_function.integration_id,
-      # module.get_nodejs_server.integration_id,
+      module.get_nodejs_server.integration_id,
       module.get_python_function.integration_id,
     ]))
   }
