@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class DotnetController : ControllerBase
     {
         private readonly ILogger<DotnetController> _logger;
@@ -21,7 +20,7 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("dotnet-webapi")]
         public IActionResult Get()
         {
             var request = (APIGatewayProxyRequest)HttpContext.Items["LambdaRequestObject"];
@@ -30,7 +29,7 @@ namespace WebApi.Controllers
     request-id: {request?.RequestContext?.RequestId}
     aws-request-id: {context?.AwsRequestId}");
 
-            return Ok("dotnet-lambda");
+            return Ok("dotnet-webapi");
         }
     }
 }

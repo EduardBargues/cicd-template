@@ -10,6 +10,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
   SERVICE_NAME: "service"
   ECR_NAME: "service-ecr"
+  CLONE_DEPTH: 10
 jobs:
   check-conventional-commits:
     runs-on: ubuntu-latest
@@ -24,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -40,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -55,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -71,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -88,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -100,33 +101,33 @@ jobs:
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           dotnet tool install -g Amazon.Lambda.Tools
           ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/WebApi dotnet-webapi netcoreapp3.1 $BUCKET_NAME
-  upload-dotnet-webapi-docker-image:
-    needs: run-dotnet-webapi-unit-tests
+  upload-nodejs-server-docker-image:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
           paths: terraform src tests
-      - name: upload-dotnet-webapi-docker-image
+      - name: upload-nodejs-server-docker-image
         if: steps.changed-path.outputs.changed == 'true'
         run: |
           chmod +x -R ./scripts
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           source ./scripts/aws/ecr/authenticate-with-ecr.sh $AWS_REGION $AWS_ACCOUNT_ID
-          ./scripts/docker/docker-build.sh Dockerfile.create-dotnet-webapi-image $ECR_NAME
+          ./scripts/docker/docker-build.sh Dockerfile.create-nodejs-server-image $ECR_NAME
           ./scripts/docker/docker-tag.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
           ./scripts/docker/docker-push.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
+          ./scripts/aws/ecr/remove-untagged-images-from-ecr.sh $ECR_NAME $AWS_REGION
   upload-dotnet-lambda-artifact:
     needs: run-dotnet-webapi-unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -143,7 +144,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -153,13 +154,13 @@ jobs:
         run: |
           chmod +x -R ./scripts
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-          ./scripts/artifacts/lambda/nodejs/create-nodejs-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/nodejs $BUCKET_NAME
+          ./scripts/artifacts/lambda/nodejs/create-nodejs-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/nodejs/lambda $BUCKET_NAME
   upload-python-lambda-artifact:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -176,7 +177,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -196,7 +197,7 @@ jobs:
       [
         download-branch-artifacts,
         upload-dotnet-webapi-lambda-artifact,
-        upload-dotnet-webapi-docker-image,
+        upload-nodejs-server-docker-image,
         upload-dotnet-lambda-artifact,
         upload-nodejs-lambda-artifact,
         upload-python-lambda-artifact,
@@ -205,7 +206,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -215,19 +216,18 @@ jobs:
         with:
           name: deployment-folder
           path: deployment-folder
-
       - name: plan-branch-deployment
         if: steps.changed-path.outputs.changed == 'true'
         run: |
           chmod +x -R ./scripts
-          ./scripts/terraform/tfm-plan.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+          ./scripts/terraform/tfm-plan.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $ECR_NAME $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
   deploy-branch:
     needs: plan-branch-deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -241,7 +241,7 @@ jobs:
         if: steps.changed-path.outputs.changed == 'true'
         run: |
           chmod +x -R ./scripts
-          ./scripts/terraform/tfm-apply.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder output-folder
+          ./scripts/terraform/tfm-apply.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $ECR_NAME $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder output-folder
       - uses: actions/upload-artifact@v2
         with:
           name: output-folder
@@ -252,7 +252,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:
@@ -271,7 +271,7 @@ jobs:
         uses: k6io/action@v0.1
         with:
           filename: tests/performance/performance-tests.js
-          flags: --vus 50 --duration 30s
+          flags: --vus 10 --duration 15s
   # INFO: E2E TESTS GO AFTER PERFORMANCE TESTS
   #       TO TAKE INTO ACCOUNT LAMBDAS' COLDSTARTS
   run-e2e-tests:
@@ -280,7 +280,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: ${{ env.CLONE_DEPTH }}
       - uses: marceloprado/has-changed-path@v1
         id: changed-path
         with:

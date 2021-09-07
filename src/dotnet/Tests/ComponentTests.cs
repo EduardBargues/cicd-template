@@ -28,7 +28,7 @@ namespace Tests
             var client = _factory.CreateClient();
 
             // ACT
-            var response = await client.GetAsync("dotnet");
+            var response = await client.GetAsync("dotnet-webapi");
 
             // ASSERT
             Assert.NotNull(response);

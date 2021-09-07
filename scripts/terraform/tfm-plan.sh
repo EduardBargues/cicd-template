@@ -11,11 +11,13 @@ ENVIRONMENT=$3
 log_key_value_pair "environment" $ENVIRONMENT
 GROUP=$(echo "$4"|tr '/' '-')
 log_key_value_pair "service-group" $GROUP
-DOCKER_IMAGE_TAG=$(echo "$5"|tr '/' '-')
+ECR_NAME=$5
+log_key_value_pair "ecr-name" $ECR_NAME
+DOCKER_IMAGE_TAG=$(echo "$6"|tr '/' '-')
 log_key_value_pair "docker-image-tag" $DOCKER_IMAGE_TAG
-BUCKET_NAME=$6
+BUCKET_NAME=$7
 log_key_value_pair "bucket-name" $BUCKET_NAME
-DEPLOYMENT_FOLDER=$7
+DEPLOYMENT_FOLDER=$8
 log_key_value_pair "deployment-folder" $DEPLOYMENT_FOLDER
 
 cd $WORKING_FOLDER/$DEPLOYMENT_FOLDER/terraform
