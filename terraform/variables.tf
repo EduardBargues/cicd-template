@@ -32,37 +32,21 @@ variable "docker_image_tag" {
   type        = string
   description = "docker image tag"
 }
-variable "vpc_cidr_block" {
-  type    = string
-  default = "10.0.0.0/16"
-}
-variable "number_of_private_subnets" {
+variable "app_count" {
   type    = number
-  default = 2
+  default = 1
 }
-variable "private_subnet_cidr_blocks" {
-  type    = list(string)
-  default = ["10.0.0.0/24", "10.0.4.0/24"]
-}
-variable "availability_zones" {
-  type    = list(string)
-  default = ["eu-west-1a", "eu-west-1b"]
-}
-variable "fargate_app_count" {
-  type    = number
-  default = 2
-}
-variable "fargate_app_memory" {
+variable "app_memory" {
   type    = number
   default = 512
 }
-variable "fargate_app_cpu" {
+variable "app_cpu" {
   type    = number
   default = 256
 }
-variable "fargate_app_port" {
+variable "app_port" {
   type    = number
-  default = 80
+  default = 8080
 }
 variable "lambda_s3_bucket" {
   type        = string

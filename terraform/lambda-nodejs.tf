@@ -3,7 +3,7 @@ data "aws_s3_bucket_object" "lambda_nodejs" {
   key    = local.lambdas.s3_key_nodejs
 }
 resource "aws_lambda_function" "lambda_nodejs" {
-  function_name     = "${local.prefixes.nodejs_function}-lambda"
+  function_name     = "${local.prefix}-nodejs"
   s3_bucket         = var.lambda_s3_bucket
   s3_key            = data.aws_s3_bucket_object.lambda_nodejs.key
   s3_object_version = data.aws_s3_bucket_object.lambda_nodejs.version_id
@@ -15,7 +15,7 @@ resource "aws_lambda_function" "lambda_nodejs" {
 }
 
 resource "aws_iam_role" "lambda_nodejs" {
-  name = "${local.prefixes.nodejs_function}-iam-role"
+  name = "${local.prefix}-nodejs-function"
 
   assume_role_policy = <<EOF
 {

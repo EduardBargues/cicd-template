@@ -6,3 +6,7 @@ output "base_url" {
 output "endpoints" {
   value = local.endpoints
 }
+
+output "alb_url" {
+  value = module.ecs.alb_hostname
+}

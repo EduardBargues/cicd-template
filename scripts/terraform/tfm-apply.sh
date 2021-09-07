@@ -27,9 +27,9 @@ cd $WORKING_FOLDER/$DEPLOYMENT_FOLDER/terraform
 
 log_action "SETTING UP TERRAFORM BACKEND"
 STATE_KEY="infra-states/$ENVIRONMENT/$SERVICE_NAME/$GROUP/$SERVICE_NAME-$ENVIRONMENT-$GROUP.tfstate"
-sed -i "s/replace-me-bucket-name/$BUCKET_NAME/g" backend.tf
-sed -i "s/replace-me-aws-region/$AWS_REGION/g" backend.tf
-sed -i "s+replace-me-tf-state-key+$STATE_KEY+g" backend.tf
+sed -i "s/replace-me-bucket/$BUCKET_NAME/g" backend.tf
+sed -i "s/replace-me-region/$AWS_REGION/g" backend.tf
+sed -i "s+replace-me-key+$STATE_KEY+g" backend.tf
 
 log_action "SETTING UP TERRAFORM VARIABLES"
 cp terraform.tfvars.json.template terraform.tfvars.json

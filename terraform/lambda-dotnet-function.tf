@@ -3,7 +3,7 @@ data "aws_s3_bucket_object" "lambda_dotnet_function" {
   key    = local.lambdas.s3_key_dotnet_function
 }
 resource "aws_lambda_function" "lambda_dotnet_function" {
-  function_name     = "${local.prefixes.dotnet_function}-lambda"
+  function_name     = "${local.prefix}-dotnet-function"
   s3_bucket         = var.lambda_s3_bucket
   s3_key            = data.aws_s3_bucket_object.lambda_dotnet_function.key
   s3_object_version = data.aws_s3_bucket_object.lambda_dotnet_function.version_id
@@ -16,7 +16,7 @@ resource "aws_lambda_function" "lambda_dotnet_function" {
 }
 
 resource "aws_iam_role" "lambda_dotnet_function" {
-  name = "${local.prefixes.dotnet_function}-iam-role"
+  name = "${local.prefix}-dotnet-function"
 
   assume_role_policy = <<EOF
 {
