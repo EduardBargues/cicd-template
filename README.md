@@ -1,16 +1,17 @@
 # CICD-TEMPLATE
 
-This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds an API supported by an APIGATEWAY developed in dotnet core 3.1, nodejs and python. Useful for teams that look for a functional solution that requires minimum configuration.
+This repo is meant to provide an initial template for teams so they can fork it and start working on it. Plug and run solution that holds an API supported by an [API-gateway](https://aws.amazon.com/api-gateway/) developed in dotnet core 3.1, [NodeJs](https://nodejs.org/en/) and [Python](https://www.python.org/). Useful for teams that look for a functional solution that requires minimum configuration.
 
-- Lambda (as a WebApi) developed in C# and AspNetCore 3.1.
-- Lambda developed in C# and dotnet core 3.1.
-- Lambda developed in NodeJs.
-- Lambda developed in Python.
-- API with 4 resources (each one pointing to a different lambda).
-- Infrastructure as Code using Terraform 1.x.
-- End to end tests developed in NodeJs with Jest.
+- [Lambda](https://aws.amazon.com/lambda/) (as a WebApi) developed in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/) and [AspNetCore](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0) 3.1.
+- [Lambda](https://aws.amazon.com/lambda/) developed in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/) and dotnet core 3.1.
+- [Lambda](https://aws.amazon.com/lambda/) developed in [NodeJs](https://nodejs.org/en/).
+- [Lambda](https://aws.amazon.com/lambda/) developed in [Python](https://www.python.org/).
+- [ECS](https://www.docker.com/) Service supported by [Fargate](https://aws.amazon.com/fargate/) developed with [NodeJs](https://nodejs.org/en/).
+- API with 5 resources (each one pointing to a different service, [Lambda](https://aws.amazon.com/lambda/) or [Fargate](https://aws.amazon.com/fargate/)).
+- Infrastructure as Code using [Terraform](https://www.terraform.io/) 1.x.
+- End to end tests developed in [NodeJs](https://nodejs.org/en/) with [Jest](https://jestjs.io/).
 - Performance tests developed with [k6](https://k6.io/).
-- Docker images are used to be able to run the web api locally without installing anything.
+- [Docker](https://www.docker.com/) images are used to be able to run the web apis locally (dotnet and NodeJs) without installing a thing.
 
 ## Features this repo provides
 
@@ -18,7 +19,7 @@ Out of the box, the following features are provided:
 
 - **development**
 
-  A (dummy) application is included in the _src_ folder. The folder includes a functional serverless api supported by 4 lambdas. Lambdas are developed in dotnet-core-3.1, nodejs, and python. In the same folder, some unit tests are included. A folder called "docker" is located in the root of the repo. Inside, you'll find 2 dockerfiles to create artifact and run e2e tests locally for the dotnet-web-api application. Both dockerfiles are meant to help you better develop your api locally.
+  A (dummy) application is included in the _src_ folder. The folder includes a functional serverless api supported by 4 [Lambda](https://aws.amazon.com/lambda/)s and one containerized application. [Lambda](https://aws.amazon.com/lambda/)s are developed in dotnet-core-3.1, [NodeJs](https://nodejs.org/en/), and [Python](https://www.python.org/)and containerized application in NodeJs. In the same folder, some unit tests are included. Inside, you'll find 2 Dockerfiles to create artifact and run e2e tests locally for the dotnet-web-api application. Both Dockerfiles are meant to help you better develop your api locally.
 
 - **continuous-integration**
 
@@ -28,17 +29,14 @@ Out of the box, the following features are provided:
   - _unit-tests_ pass.
   - creates and uploads branch artifacts to an s3 bucket.
   - deploys the infrastructure into an aws-account.
-  - runs e2e tests.
   - runs performance tests.
-  - runs specific tests to ensure lambdas' coldstarts are under control.
+  - runs e2e tests.
 
 - **continuous-delivery/deployment**
 
   Once a pull request is merged into the **main** branch, the workflow _after-merge-workflow_ is launched. Here, the workflow
 
   - [semantically versions](https://semver.org/) the repository, and tags your merge commit with the new version.
-  - It also creates and uploads semver artifacts.
-  - deploys to an aws-account automatically.
 
 - **Tests**
 
@@ -48,33 +46,24 @@ Out of the box, the following features are provided:
 
   - **End to end testing**
 
-    The folder _tests/e2e_ holds some e2e tests that represent how your client would call the api once deployed. Allows to run e2e tests against an already deployed api in a aws account.
+    The folder _tests/e2e_ holds some e2e tests that represent how your client would call the api once deployed. Allows to run e2e tests against an already deployed api in an aws account.
 
   - **Performance testing**
 
-    The folder _tests/performance/average_ holds some _performance_ tests as a .js script that "attacks" your deployed API and computes the average response time for all its endpoints using several threads.
-
-  - **First response time**
-
-<<<<<<< Updated upstream
-    The folder _tests/performance/first-call_ holds some _performance_ tests as a dotnet core 3.1 console application that calls each endpoint one single time and computes the response time. Usefull to measure the impact of your lambdas' coldstart.
-
-  - **Deployment monitoring**
-
-    The folder _tests/monitoring_ contains a script in javascript that will call the API's endpoints during a period of time. This is useful to monitor potential downtimes during deployments. For this POC, the script runs during deployments from the main branch.
+    The folder _tests/performance_ holds some _performance_ tests as a .js script that "attacks" your deployed API and computes several stats about your API availability and response time.
 
 - **clean-up infra after pull request**
 
-  A workflow called _pull-request-closed-workflow_ will be executed after a pull request is closed (merged or declined). This will ensure no residual infrastructure is left in your AWS account. Good way to avoid extra charge from Amazon :) ...
+  A workflow called _clean-up_ will be executed after a pull request is closed (merged or declined). This will ensure no residual infrastructure is left in your AWS account. Good way to avoid extra charges from Amazon :) ...
 
 - **manual-infrastructure-destruction**
 
-  There is a workflow called _destroy-workflow_ that will erase your infrastructure in the provided aws account. Use it with caution ;) ...
+  There is a workflow called _destroy_ that will erase your infrastructure in the provided aws account. Use it with caution ;) ...
 
 - **manual-deployment/configuration**
 
-  Check out the _configuration_ branch.
-=======
+  Check out the _configuration_ branch. Readme file.
+
 - **manual-deployment/configurations**
 
   There is also a workflow called _deploy-workflow_ that allows you to manually deploy a specific version to an aws-account by introducing the required inputs. Those inputs are:
@@ -87,37 +76,42 @@ Out of the box, the following features are provided:
 
 ### Up-coming features
 
-- NOTHING PLANNED.
->>>>>>> Stashed changes
+- **manual-deployment/configurations**
+
+  There is also a workflow called _deploy-workflow_ that allows you to manually deploy a specific version to an aws-account by introducing the required inputs. Those inputs are:
+
+  - service-version: version of the service to deploy.
+  - environment: where to deploy it.
+  - service-group: group to be deployed or updated.
+  - s3-bucket-name: bucket where the configuration is stored.
+  - s3-bucket-key: key of the tfvars file that holds the configuration.
 
 ## How to set it up
 
 This repository is (meant to be) provided as a **_self-contained_** and **_plug-and-run_** solution. Nothing external is required to make it work.
 To start working on your own solution follow those steps:
 
-- Fork(or clone) the repo to create your own.
-- Execute the following commands in your terminal to have the dotnet webapi running locally:
+- Fork (or clone) the repo to create your own.
+- You can build and run both _Dockerfiles.\*_ in the root directory. Something like:
+  > docker image build . --file Dockerfile.create-nodejs-server-image --tag name-of-your-choice
+  > docker run -p 80:80 name-of-your-choice
+  > You can do the same for the _Dockerfile.create-dotnet-webapi-image_ file.
+- To start creating pull requests and see some action:
 
-  > **cd cicd-template/** #move inside the repository
-
-  > **chmod +x ./docker/\*.sh** #execution permissions to the .sh files
-
-  > **./docker/run-container-locally.sh** # build aspnetcore image and run webapi in http://localhost:5000/dotnet
-
-- Setup the following secrets to your (new) repository:
-
-  - AWS_ACCESS_KEY: Access key id of the github user.
-  - AWS_SECRET_KEY: Secret key of the github user.
-  - AWS_ACCOUNT_ID: Aws account id.
-  - AWS_REGION: Aws region name.
-  - BUCKET_NAME: Name of the s3 bucket where the artifacts, configurations, and terraform state files will be stored.
+  - check out the required secrets you need on your repository:
+    - AWS_ACCESS_KEY: Access key id of the github user.
+    - AWS_SECRET_KEY: Secret key of the github user.
+    - AWS_ACCOUNT_ID: Aws account id.
+    - AWS_REGION: Aws region name.
+    - BUCKET_NAME: Name of the s3 bucket where the artifacts, configurations, and [Lambda](https://www.terraform.io/) state files will be stored.
+  - Create an [ECR](https://aws.amazon.com/ecr/) repository in your aws account. Once you have the name, copy paste it in an environment variable.
 
 - Create a pull request from a new branch to the main branch.
 
-  - This will trigger the continuous-integration workflow.
+  - This will trigger the continuous-integration workflow (_github/workflows/ci.yml_).
   - Take into account that all steps in that workflow are conditionally activated based on the folders that have been modified during the pull request.
 
-- Once the pull request is merged to the main branch the continuous-deployment workflow will be activated.
+- Once the pull request is merged to the main branch the continuous-deployment workflow (_github/workflows/cd.yml_) will be activated.
 
 ## Who/How to contact
 
@@ -129,4 +123,4 @@ To start working on your own solution follow those steps:
 
 ## How to contribute?
 
-- Open a pull request against the main branch: https://github.com/EduardBargues/cicd-template/pulls
+- Open a pull request against the main branch (from a forked repo :) ): https://github.com/EduardBargues/cicd-template/pulls
