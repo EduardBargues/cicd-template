@@ -1,3 +1,9 @@
+# :confetti_ball: 0.18.0.0 (2021-09-10T16:56:54.178Z)
+- - -
+## :hammer: Features
+* include docker-compose to load-test dotnet-webapi with k6+grafana (#70)
+- - -
+- - -
 # :confetti_ball: 0.17.0.2 (2021-09-08T12:36:39.732Z)
 - - -
 ## :newspaper: Others
