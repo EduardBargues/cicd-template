@@ -5,9 +5,9 @@ source $WORKING_FOLDER/scripts/_common/logging.sh
 log_action "building docker"
 DOCKERFILE_NAME=$1
 log_key_value_pair "dockerfile-name" $DOCKERFILE_NAME
-DOCKER_REPOSITORY_NAME=$2
-log_key_value_pair "docker-repository-name" $DOCKER_REPOSITORY_NAME
+TAG=$2
+log_key_value_pair "tag" $TAG
 
 docker image build . \
     --file $DOCKERFILE_NAME \
-    --tag $DOCKER_REPOSITORY_NAME
+    --tag $TAG
