@@ -19,7 +19,19 @@ Out of the box, the following features are provided:
 
 - **development**
 
-  A (dummy) application is included in the _src_ folder. The folder includes a functional serverless api supported by 4 [Lambda](https://aws.amazon.com/lambda/)s and one containerized application. [Lambda](https://aws.amazon.com/lambda/)s are developed in dotnet-core-3.1, [NodeJs](https://nodejs.org/en/), and [Python](https://www.python.org/)and containerized application in NodeJs. In the same folder, some unit tests are included. Inside, you'll find 2 Dockerfiles to create artifact and run e2e tests locally for the dotnet-web-api application. Both Dockerfiles are meant to help you better develop your api locally.
+  Several (dummy) applications are included in the _src_ folder. The folder includes a functional serverless api supported by 4 [Lambdas](https://aws.amazon.com/lambda/) and one containerized application. [Lambdas](https://aws.amazon.com/lambda/) are developed in dotnet-core-3.1, [NodeJs](https://nodejs.org/en/), and [Python](https://www.python.org/) and containerized application in NodeJs. In the same folder, some unit tests are included. In the root folder, you'll find 2 Dockerfiles to create artifact and run tests locally for the dotnet-web-api and NodeJs applications. Both Dockerfiles are meant to help you better develop your api locally.
+
+- **local-load-testing**
+
+  Included in the root folder, there is a folder called _local-testing_. Inside, you'll find a ready-to-run script called _local-testing/scripts/run-load-tests.sh_ that will run a docker-compose file. If you check the script, you'll see that:
+
+  - Creates 2 containers from the applications in _src/dotnet/WebApi_ _src/nodejs/server_.
+  - Runs the docker-compose.yml file, which contains:
+    - Both dotnet and nodejs applications exposed to particular ports.
+    - A time-series database called [influxdb](https://www.influxdata.com/). Which essentially allows to store and retrieve timeseries data.
+    - A [graphana](https://grafana.com/) dashboard that pulls data from influxdb.
+    - A [k6](https://k6.io/) service that load-tests the apis that your applications expose and stores the stats in influxdb.
+  - All together produces a real-time dashboard exposed in the url _http://localhost:3000/d/k6/k6-load-testing-results_ (don't use the url before running the script ... :P) where you can see how your apis respond.
 
 - **continuous-integration**
 
