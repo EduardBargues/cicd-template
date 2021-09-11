@@ -66,6 +66,21 @@ jobs:
         run: |
           chmod +x -R ./scripts
           ./scripts/terraform/tfm-validate.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME
+  run-local-load-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-path
+        with:
+          paths: src local-testing
+      - name: run-local-load-tests
+        # if: steps.changed-path.outputs.changed == 'true'
+        run: |
+          chmod +x -R ./local-testing
+          ./local-testing/scripts/run-load-tests.sh
   upload-iac-artifact:
     needs: validate-iac
     runs-on: ubuntu-latest

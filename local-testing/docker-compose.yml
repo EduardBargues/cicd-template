@@ -9,10 +9,12 @@ services:
     image: dotnet-webapi:latest
     ports:
       - "5000:5000"
+
   nodejs-server:
     image: nodejs-server:latest
     ports:
       - "8080:8080"
+
   influxdb:
     image: influxdb:1.8
     networks:
@@ -22,6 +24,7 @@ services:
       - "8086:8086"
     environment:
       - INFLUXDB_DB=k6
+
   grafana:
     image: grafana/grafana:latest
     networks:
@@ -36,6 +39,7 @@ services:
       - ./dashboards:/var/lib/grafana/dashboards
       - ./grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+
   k6:
     image: loadimpact/k6:latest
     networks:
