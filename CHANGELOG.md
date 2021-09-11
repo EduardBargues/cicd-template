@@ -1,3 +1,9 @@
+# :confetti_ball: 0.18.0.1 (2021-09-11T12:35:29.072Z)
+- - -
+## :newspaper: Others
+* refactor: clean up local load testing folder (#71)
+- - -
+- - -
 # :confetti_ball: 0.18.0.0 (2021-09-10T16:56:54.178Z)
 - - -
 ## :hammer: Features
