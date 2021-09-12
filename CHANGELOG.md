@@ -1,3 +1,9 @@
+# :confetti_ball: 0.19.0.1 (2021-09-12T15:27:04.942Z)
+- - -
+## :newspaper: Others
+* refactor:  simplify terraform outputs (#77)
+- - -
+- - -
 # :confetti_ball: 0.19.0.0 (2021-09-12T15:01:36.452Z)
 - - -
 ## :hammer: Features
