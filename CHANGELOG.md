@@ -1,3 +1,9 @@
+# :confetti_ball: 0.19.0.2 (2021-09-12T15:50:16.890Z)
+- - -
+## :newspaper: Others
+* refactor:  unlimit the max_body_size in influxdb
+- - -
+- - -
 # :confetti_ball: 0.19.0.1 (2021-09-12T15:27:04.942Z)
 - - -
 ## :newspaper: Others
