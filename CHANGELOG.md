@@ -1,3 +1,9 @@
+# :confetti_ball: 0.19.0.0 (2021-09-12T15:01:36.452Z)
+- - -
+## :hammer: Features
+* add Function inside webapi using DI (#75)
+- - -
+- - -
 # :confetti_ball: 0.18.0.2 (2021-09-11T13:04:05.389Z)
 - - -
 ## :newspaper: Others
