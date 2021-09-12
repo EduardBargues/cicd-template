@@ -2,12 +2,11 @@ const appFile = require("./app.json");
 
 const theApplicationIsUpAndRunning = () => {
   const app = {
-    baseUrl: appFile.base_url.value,
-    dotnetWebApiEndpoint: `${appFile.base_url.value}/${appFile.endpoints.value.dotnet_webapi}`,
-    dotnetFunctionEndpoint: `${appFile.base_url.value}/${appFile.endpoints.value.dotnet_function}`,
-    nodejsFunctionEndpoint: `${appFile.base_url.value}/${appFile.endpoints.value.nodejs_function}`,
-    nodejsServerEndpoint: `${appFile.base_url.value}/${appFile.endpoints.value.nodejs_server}`,
-    pythonFunctionEndpoint: `${appFile.base_url.value}/${appFile.endpoints.value.python_function}`,
+    dotnetWebApiEndpoint: appFile.endpoints.value._dotnet_webapi,
+    dotnetFunctionEndpoint: appFile.endpoints.value._dotnet_function,
+    nodejsFunctionEndpoint: appFile.endpoints.value._nodejs_function,
+    nodejsServerEndpoint: appFile.endpoints.value._nodejs_server,
+    pythonFunctionEndpoint: appFile.endpoints.value._python_function,
   };
   return app;
 };

@@ -8,11 +8,11 @@ locals {
     s3_key_python          = "artifacts/${var.service_name}/${var.service_version}/${var.service_name}-${var.service_version}-python.zip"
   }
   endpoints = {
-    dotnet_webapi   = "dotnet-webapi"
-    dotnet_function = "dotnet-function"
-    nodejs_function = "nodejs-function"
-    nodejs_server   = "nodejs-server"
-    python_function = "python-function"
+    _dotnet_webapi   = "dotnet-webapi"
+    _dotnet_function = "dotnet-function"
+    _nodejs_function = "nodejs-function"
+    _nodejs_server   = "nodejs-server"
+    _python_function = "python-function"
   }
   logs_retention_in_days = 1
   apigw_name             = "${local.prefix}-apigw"

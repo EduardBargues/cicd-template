@@ -3,7 +3,6 @@ import { check } from "k6";
 import { Trend, Rate } from "k6/metrics";
 const api = JSON.parse(open("app.json"));
 
-const baseUrl = api.base_url.value;
 const endpoints = api.endpoints.value;
 
 let operationsTrends = {};
@@ -22,8 +21,7 @@ export let options = {
 export default function () {
   let requests = {};
   for (const endpointName in endpoints) {
-    const endpointUrl = endpoints[endpointName];
-    const url = `${baseUrl}/${endpointUrl}`;
+    const url = endpoints[endpointName];
     const request = {
       method: "GET",
       url: url,
