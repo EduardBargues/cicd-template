@@ -12,7 +12,7 @@ using Amazon.Lambda.APIGatewayEvents;
 
 namespace Function
 {
-    public class Function
+    public class Function : IFunction
     {
         /// <summary>
         /// Default constructor that Lambda will invoke.
@@ -29,9 +29,9 @@ namespace Function
         /// <returns>The API Gateway response.</returns>
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            context.Logger.Log($@"DOTNET-FUNCTION LAMBDA EXECUTION
-    request-id: {request.RequestContext.RequestId}
-    aws-request-id: {context.AwsRequestId}");
+            context?.Logger?.Log($@"DOTNET-FUNCTION LAMBDA EXECUTION
+    request-id: {request?.RequestContext?.RequestId}
+    aws-request-id: {context?.AwsRequestId}");
 
             var response = new APIGatewayProxyResponse
             {
