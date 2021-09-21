@@ -1,3 +1,9 @@
+# :confetti_ball: 0.20.0.0 (2021-09-21T13:34:40.192Z)
+- - -
+## :hammer: Features
+* introduce dotnet DI in both webapi and function (#78)
+- - -
+- - -
 # :confetti_ball: 0.19.0.2 (2021-09-12T15:50:16.890Z)
 - - -
 ## :newspaper: Others
