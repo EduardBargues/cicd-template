@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Service;
 
 namespace WebApi
 {
@@ -26,8 +27,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IFunction, Function.Function>();
             services.AddControllers();
+            services.AddTransient<IDependencyService, DependencyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

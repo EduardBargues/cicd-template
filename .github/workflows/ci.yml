@@ -35,7 +35,7 @@ jobs:
         run: |
           chmod +x -R ./scripts
           ./scripts/builds/dotnet/build-dotnet-app.sh src/dotnet
-  run-dotnet-webapi-unit-tests:
+  run-dotnet-unit-tests:
     needs: build-dotnet-webapi
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +46,7 @@ jobs:
         id: changed-path
         with:
           paths: src/dotnet
-      - name: run-dotnet-webapi-unit-tests
+      - name: run-dotnet-unit-tests
         if: steps.changed-path.outputs.changed == 'true'
         run: |
           chmod +x -R ./scripts
@@ -84,7 +84,7 @@ jobs:
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           ./scripts/artifacts/create-iac-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME terraform $BUCKET_NAME
   upload-dotnet-webapi-lambda-artifact:
-    needs: run-dotnet-webapi-unit-tests
+    needs: run-dotnet-unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -122,7 +122,7 @@ jobs:
           ./scripts/docker/docker-push.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
           ./scripts/aws/ecr/remove-untagged-images-from-ecr.sh $ECR_NAME $AWS_REGION
   upload-dotnet-lambda-artifact:
-    needs: run-dotnet-webapi-unit-tests
+    needs: run-dotnet-unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
