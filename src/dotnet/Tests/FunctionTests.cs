@@ -1,29 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Xunit;
-using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
-
-using Function;
 using Amazon.Lambda.APIGatewayEvents;
+using Service;
+using Moq;
 
 namespace Function.Tests
 {
     public class FunctionTest
     {
         [Fact]
-        public void TestToUpperFunction()
+        public async Task TestToUpperFunction()
         {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var function = new Function();
+            // ARRANGE
+            var mockResponse = "mamock :P !";
+            var mock = new Mock<IDependencyService>();
+            mock.Setup(m => m.DoAsync()).ReturnsAsync(mockResponse);
+            var function = new Function(mock.Object);
             var context = new TestLambdaContext();
             var request = new APIGatewayProxyRequest() { RequestContext = new APIGatewayProxyRequest.ProxyRequestContext() };
-            var response = function.FunctionHandler(request, context);
 
+            // ACT
+            var response = await function.FunctionHandler(request, context);
+
+            // ASSERT
             Assert.Equal(200, response.StatusCode);
+            Assert.Contains(mockResponse, response.Body);
         }
     }
 }
