@@ -1,3 +1,9 @@
+# :confetti_ball: 0.20.0.1 (2021-09-22T07:35:27.445Z)
+- - -
+## :newspaper: Others
+* refactor:  remove Swagger from webapi lambda dotnet (#79)
+- - -
+- - -
 # :confetti_ball: 0.20.0.0 (2021-09-21T13:34:40.192Z)
 - - -
 ## :hammer: Features
