@@ -6,7 +6,6 @@ jobs:
     name: dotnet-build
     steps:
       - uses: actions/checkout@v2
-      - id: foo
-        uses: ohpensource/platform-cicd-scripts/build-dotnet-app@0.4.2.0
+      - uses: ohpensource/platform-cicd-scripts/platform-cicd-scripts/builds/dotnet@0.4.2.1
         with:
           app-path: "src/dotnet"
