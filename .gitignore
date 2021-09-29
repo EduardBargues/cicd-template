@@ -15,9 +15,7 @@
 *.terraform.lock.hcl
 .vscode
 package-lock.json
-terraform-local-dev.tfvars.json
-app-local-dev.json
-terraform/credentials.sh
+terraform.tfstate
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

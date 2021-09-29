@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      - SERVICES=lambda,s3,iam,apigateway
+      - DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+    ports:
+      - "4566:4566"
+
+  terraform:
+    image: "hashicorp/terraform:1.0.0"
+    network_mode: host
+    volumes:
+      - ./iac:/terraform
+    working_dir: /terraform
