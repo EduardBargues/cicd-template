@@ -1,3 +1,9 @@
+# :confetti_ball: 0.21.0.0 (2021-09-29T12:46:48.056Z)
+- - -
+## :hammer: Features
+* include localstack folder with a working demo (#80)
+- - -
+- - -
 # :confetti_ball: 0.20.0.1 (2021-09-22T07:35:27.445Z)
 - - -
 ## :newspaper: Others
