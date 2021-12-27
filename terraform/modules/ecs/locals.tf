@@ -1,3 +1,3 @@
 locals {
-  container_name = "${var.prefix}-container"
+  container_name = "${var.app_name}-container"
 }

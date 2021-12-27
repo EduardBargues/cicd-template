@@ -24,30 +24,6 @@ variable "aws_account_id" {
   description = "aws account id"
   sensitive   = true
 }
-variable "ecr_name" {
-  type        = string
-  description = "elastic container repository name"
-}
-variable "docker_image_tag" {
-  type        = string
-  description = "docker image tag"
-}
-variable "app_count" {
-  type    = number
-  default = 1
-}
-variable "app_memory" {
-  type    = number
-  default = 512
-}
-variable "app_cpu" {
-  type    = number
-  default = 256
-}
-variable "app_port" {
-  type    = number
-  default = 8080
-}
 variable "lambda_s3_bucket" {
   type        = string
   description = "name of the s3 bucket that holds the lambda artifacts"

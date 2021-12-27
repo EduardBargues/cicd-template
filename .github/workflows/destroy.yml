@@ -26,5 +26,5 @@ jobs:
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          chmod +x ./scripts/*.sh
+          chmod +x -R ./scripts
           ./scripts/tfm-destroy.sh ${{ github.event.inputs.version }} ${{ github.event.inputs.environment }} ${{ github.event.inputs.group }}

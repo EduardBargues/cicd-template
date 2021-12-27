@@ -1,5 +1,5 @@
 resource "aws_security_group" "lb" {
-  name        = "${var.prefix}-lb-sg"
+  name        = "${var.app_name}-lb-sg"
   description = "controls access to the ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -20,7 +20,7 @@ resource "aws_security_group" "lb" {
 
 # Traffic to the ECS cluster should only come from the ALB
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.prefix}-tasks-sg"
+  name        = "${var.app_name}-tasks-sg"
   description = "allow inbound access from the ALB only"
   vpc_id      = aws_vpc.main.id
 
