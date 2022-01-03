@@ -4,13 +4,12 @@ import { Trend, Rate } from "k6/metrics";
 const api = JSON.parse(open("app.json"));
 
 const endpoints = api.endpoints.value;
-
-let operationsTrends = {};
-let operationsErrorRate = {};
+let trends = {};
+let errorRates = {};
 let thresholds = {};
 for (const endpointName in endpoints) {
-  operationsErrorRate[endpointName] = new Rate(endpointName);
-  operationsTrends[endpointName] = new Trend(endpointName);
+  errorRates[endpointName] = new Rate(`${endpointName}_error_rate`);
+  trends[endpointName] = new Trend(`${endpointName}_stats`);
   thresholds[endpointName] = ["p(95)<250", "max < 2500"];
 }
 
@@ -28,17 +27,14 @@ export default function () {
     };
     requests[endpointName] = request;
   }
-
   let responses = http.batch(requests);
-
   for (const endpointName in endpoints) {
-    let listResp = responses[endpointName];
-    let listErrorRate = operationsErrorRate[endpointName];
-    check(listResp, {
+    let response = responses[endpointName];
+    let rate = errorRates[endpointName];
+    check(response, {
       "status is 200": (r) => r.status === 200,
-    }) || listErrorRate.add(1);
-
-    let listTrend = operationsTrends[endpointName];
-    listTrend.add(listResp.timings.duration);
+    }) || rate.add(1);
+    let trend = trends[endpointName];
+    trend.add(response.timings.duration);
   }
 }

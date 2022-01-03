@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "main" {
-  name = "${var.prefix}-cluster"
+  name = var.app_name
 }
 
 data "template_file" "app" {
@@ -17,7 +17,7 @@ data "template_file" "app" {
 }
 
 resource "aws_ecs_task_definition" "app" {
-  family                   = "${var.prefix}-td"
+  family                   = var.app_name
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "${var.prefix}-service"
+  name            = var.app_name
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.app_count

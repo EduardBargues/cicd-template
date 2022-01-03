@@ -2,9 +2,9 @@
 variable "aws_region" {
   description = "The AWS region things are created in"
 }
-variable "prefix" {
-  description = "prefix for resources to be named with."
+variable "app_name" {
   type        = string
+  description = "name of the application. Used for resource naming."
 }
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
@@ -38,8 +38,4 @@ variable "fargate_memory" {
 
 variable "log_retention_in_days" {
   type = number
-}
-
-variable "tags" {
-  type = map(any)
 }

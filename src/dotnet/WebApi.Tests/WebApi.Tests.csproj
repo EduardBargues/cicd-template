@@ -25,8 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Function\Function.csproj" />
-  </ItemGroup>
 
 </Project>

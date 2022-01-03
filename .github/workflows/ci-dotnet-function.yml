@@ -1,0 +1,27 @@
+name: ci-dotnet-function
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/dotnet/Function/**"
+      - "src/dotnet/Function.Tests/**"
+      - "src/dotnet/Service/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build-dotnet-webapi
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/builds/dotnet/build-dotnet-app.sh "src/dotnet/Function" "csproj"
+  unit-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: unit-tests
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/tests/dotnet/run-dotnet-tests.sh "src/dotnet/Function.Tests" "csproj"
+  

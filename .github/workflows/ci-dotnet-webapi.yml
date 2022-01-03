@@ -1,0 +1,27 @@
+name: ci-dotnet-webapi
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/dotnet/WebApi/**"
+      - "src/dotnet/WebApi.Tests/**"
+      - "src/dotnet/Service/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build-dotnet-webapi
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/builds/dotnet/build-dotnet-app.sh "src/dotnet/WebApi" "csproj"
+  unit-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: unit-tests
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/tests/dotnet/run-dotnet-tests.sh "src/dotnet/WebApi.Tests" "csproj"
+  

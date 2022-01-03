@@ -1,0 +1,14 @@
+{
+  "name": "coldstarts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1046.0",
+    "mathjs": "^10.0.0"
+  }
+}

@@ -21,6 +21,7 @@ namespace Function
             _service = service;
         }
 
+
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
             context?.Logger?.Log($@"DOTNET-FUNCTION LAMBDA EXECUTION

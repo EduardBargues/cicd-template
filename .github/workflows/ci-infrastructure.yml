@@ -1,0 +1,219 @@
+name: ci-infrastructure
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "terraform/**"
+      - "src/**"
+      - "tests/**"
+env:
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+  SERVICE_NAME: "service"
+  ECR_NAME: "service-ecr"
+jobs:
+  validate-iac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: validate-terraform
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-validate.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $BUCKET_NAME
+  upload-iac-artifact:
+    needs: validate-iac
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-iac-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/create-iac-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME terraform $BUCKET_NAME
+  upload-dotnet-webapi-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-dotnet-webapi-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          dotnet tool install -g Amazon.Lambda.Tools
+          ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/WebApi dotnet-webapi netcoreapp3.1 $BUCKET_NAME
+  upload-dotnet-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-dotnet-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          dotnet tool install -g Amazon.Lambda.Tools
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/Function dotnet-function netcoreapp3.1 $BUCKET_NAME
+  upload-nodejs-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-nodejs-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/nodejs/create-nodejs-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/nodejs/lambda $BUCKET_NAME
+  upload-python-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-python-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/python/create-python-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/python $BUCKET_NAME
+  upload-nodejs-server-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: upload-nodejs-server-docker-image
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          source ./scripts/aws/ecr/authenticate-with-ecr.sh $AWS_REGION $AWS_ACCOUNT_ID
+          ./scripts/docker/docker-build.sh Dockerfile.create-nodejs-server-image $ECR_NAME
+          ./scripts/docker/docker-tag.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
+          ./scripts/docker/docker-push.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
+          ./scripts/aws/ecr/remove-untagged-images-from-ecr.sh $ECR_NAME $AWS_REGION
+  download-branch-artifacts:
+    needs: upload-iac-artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: download-branch-artifacts
+        run: |
+          chmod +x -R ./scripts
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/download-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME $BUCKET_NAME terraform deployment-folder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+  plan-branch-deployment:
+    needs:
+      [
+        download-branch-artifacts,
+        upload-dotnet-webapi-lambda-artifact,
+        upload-nodejs-server-docker-image,
+        upload-dotnet-lambda-artifact,
+        upload-nodejs-lambda-artifact,
+        upload-python-lambda-artifact,
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+      - name: plan-branch-deployment
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-plan.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $ECR_NAME $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder
+  deploy-branch:
+    needs: plan-branch-deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: deployment-folder
+          path: deployment-folder
+      - name: deploy-branch
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/terraform/tfm-apply.sh $GITHUB_HEAD_REF $SERVICE_NAME dev $GITHUB_HEAD_REF $ECR_NAME $GITHUB_HEAD_REF $BUCKET_NAME deployment-folder output-folder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+      - id: lambdas-step
+        run: |
+          jq '.lambdas.value' ./output-folder/app.json
+          json=$(jq '.lambdas.value' ./output-folder/app.json)
+          echo "::set-output name=lambda-names::$json"
+    outputs:
+      lambda-names: ${{ toJSON(steps.lambdas-step.outputs.lambda-names) }}
+  run-e2e-tests:
+    needs: deploy-branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+      - name: run-e2e-tests
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/tests/js/run-js-tests.sh tests/e2e e2e output-folder/app.json
+  run-performance-tests:
+    needs: run-e2e-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v2
+        with:
+          name: output-folder
+          path: output-folder
+      - name: copy-app-file-to-tests-folder
+        run: |
+          cp ./output-folder/app.json ./tests/performance/app.json
+      - name: run-performance-tests
+        uses: k6io/action@v0.1
+        with:
+          filename: tests/performance/performance-tests.js
+          flags: --vus 10 --duration 15s
+  run-coldstart-tests-dotnet-webapi:
+    needs: [run-performance-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-coldstart-tests
+        run: |
+          chmod +x -R ./tests/coldstarts/*.sh
+          SERVICE_GROUP=$(echo "$GITHUB_HEAD_REF"|tr '/' '-')
+          FUNCTION_NAME="dev-$SERVICE_NAME-$SERVICE_GROUP-dotnet-webapi"
+          ./tests/coldstarts/main.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION 20 2000 $FUNCTION_NAME "payload.json"
+  run-coldstart-tests-dotnet-function:
+    needs: [run-performance-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-coldstart-tests
+        run: |
+          chmod +x -R ./tests/coldstarts/*.sh
+          SERVICE_GROUP=$(echo "$GITHUB_HEAD_REF"|tr '/' '-')
+          FUNCTION_NAME="dev-$SERVICE_NAME-$SERVICE_GROUP-dotnet-function"
+          ./tests/coldstarts/main.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION 20 1000 $FUNCTION_NAME "payload.json"
+  run-coldstart-tests-nodejs:
+    needs: [run-performance-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-coldstart-tests
+        run: |
+          chmod +x -R ./tests/coldstarts/*.sh
+          SERVICE_GROUP=$(echo "$GITHUB_HEAD_REF"|tr '/' '-')
+          FUNCTION_NAME="dev-$SERVICE_NAME-$SERVICE_GROUP-nodejs"
+          ./tests/coldstarts/main.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION 20 750 $FUNCTION_NAME "payload.json"
+  run-coldstart-tests-python:
+    needs: [run-performance-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-coldstart-tests
+        run: |
+          chmod +x -R ./tests/coldstarts/*.sh
+          SERVICE_GROUP=$(echo "$GITHUB_HEAD_REF"|tr '/' '-')
+          FUNCTION_NAME="dev-$SERVICE_NAME-$SERVICE_GROUP-python"
+          ./tests/coldstarts/main.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION 20 750 $FUNCTION_NAME "payload.json"

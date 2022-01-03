@@ -1,0 +1,13 @@
+name: ci-git
+on:
+  pull_request:
+    branches: ["main"]
+jobs:
+  check-conventional-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: ensure-conventional-commits
+        run: node ./scripts/git/ensure-conventional-commits.js $GITHUB_BASE_REF $GITHUB_HEAD_REF
