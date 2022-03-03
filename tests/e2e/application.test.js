@@ -23,6 +23,13 @@ describe(`GIVEN application is up and running`, () => {
     });
   });
 
+  describe("WHEN calling /dotnet6-function", () => {
+    it(`THEN should return OK-200`, async () => {
+      const response = await when.weInvokeEndpoint(app.dotnet6FunctionEndpoint);
+      then.responseIsOk(response);
+    });
+  });
+
   describe("WHEN calling /nodejs-function", () => {
     it(`THEN should return OK-200`, async () => {
       const response = await when.weInvokeEndpoint(app.nodejsFunctionEndpoint);

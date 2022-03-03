@@ -53,6 +53,16 @@ jobs:
           dotnet tool install -g Amazon.Lambda.Tools
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/Function dotnet-function netcoreapp3.1 $BUCKET_NAME
+  upload-dotnet6-lambda-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-dotnet6-lambda-artifact
+        run: |
+          chmod +x -R ./scripts
+          dotnet tool install -g Amazon.Lambda.Tools
+          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+          ./scripts/artifacts/lambda/dotnet/create-dotnet-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/dotnet/FunctionDotnet6 dotnet6-function net6.0 $BUCKET_NAME
   upload-nodejs-lambda-artifact:
     runs-on: ubuntu-latest
     steps:
@@ -71,19 +81,20 @@ jobs:
           chmod +x -R ./scripts
           source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
           ./scripts/artifacts/lambda/python/create-python-lambda-artifact.sh $GITHUB_HEAD_REF $SERVICE_NAME src/python $BUCKET_NAME
-  upload-nodejs-server-docker-image:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: upload-nodejs-server-docker-image
-        run: |
-          chmod +x -R ./scripts
-          source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-          source ./scripts/aws/ecr/authenticate-with-ecr.sh $AWS_REGION $AWS_ACCOUNT_ID
-          ./scripts/docker/docker-build.sh Dockerfile.create-nodejs-server-image $ECR_NAME
-          ./scripts/docker/docker-tag.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
-          ./scripts/docker/docker-push.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
-          ./scripts/aws/ecr/remove-untagged-images-from-ecr.sh $ECR_NAME $AWS_REGION
+  # upload-nodejs-server-docker-image:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: upload-nodejs-server-docker-image
+  #       run: |
+  #         chmod +x -R ./scripts
+  #         source ./scripts/aws/credentials/set-up-user-credentials.sh $AWS_REGION $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+  #         source ./scripts/aws/ecr/authenticate-with-ecr.sh $AWS_REGION $AWS_ACCOUNT_ID
+  #         ./scripts/docker/docker-build.sh Dockerfile.create-nodejs-server-image $ECR_NAME
+  #         ./scripts/docker/docker-tag.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
+  #         ./scripts/docker/docker-push.sh $ECR_NAME $GITHUB_HEAD_REF $AWS_REGION $AWS_ACCOUNT_ID
+  #         ./scripts/aws/ecr/remove-untagged-images-from-ecr.sh $ECR_NAME $AWS_REGION
+  
   download-branch-artifacts:
     needs: upload-iac-artifact
     runs-on: ubuntu-latest
@@ -103,7 +114,7 @@ jobs:
       [
         download-branch-artifacts,
         upload-dotnet-webapi-lambda-artifact,
-        upload-nodejs-server-docker-image,
+        # upload-nodejs-server-docker-image,
         upload-dotnet-lambda-artifact,
         upload-nodejs-lambda-artifact,
         upload-python-lambda-artifact,

@@ -1,20 +1,20 @@
-name: ci-dotnet-functions
+name: ci-dotnet6-functions
 on:
   pull_request:
     branches: ["main"]
     paths:
-      - "src/dotnet/Function/**"
-      - "src/dotnet/Function.Tests/**"
+      - "src/dotnet/FunctionDotnet6/**"
+      - "src/dotnet/FunctionDotnet6.Tests/**"
       - "src/dotnet/Service/**"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: build-dotnet-function
+      - name: build-dotnet6-function
         run: |
           chmod +x -R ./scripts
-          ./scripts/builds/dotnet/build-dotnet-app.sh "src/dotnet/Function" "csproj"
+          ./scripts/builds/dotnet/build-dotnet-app.sh "src/dotnet/FunctionDotnet6" "csproj"
   unit-tests:
     needs: build
     runs-on: ubuntu-latest
@@ -23,5 +23,5 @@ jobs:
       - name: unit-tests
         run: |
           chmod +x -R ./scripts
-          ./scripts/tests/dotnet/run-dotnet-tests.sh "src/dotnet/Function.Tests" "csproj"
+          ./scripts/tests/dotnet/run-dotnet-tests.sh "src/dotnet/FunctionDotnet6.Tests" "csproj"
   

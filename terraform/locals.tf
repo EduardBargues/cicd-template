@@ -25,6 +25,18 @@ locals {
         timeout       = 30
       }
     }
+    _dotnet6_function = {
+      url         = "dotnet6-function"
+      http_method = "GET"
+      config = {
+        function_name = "dotnet6-function"
+        s3_key        = "artifacts/${var.service_name}/${var.service_version}/${var.service_name}-${var.service_version}-dotnet6-function.zip"
+        handler       = "Function::Function.Function::FunctionHandler"
+        runtime       = "dotnet6"
+        memory_size   = 256
+        timeout       = 30
+      }
+    }
     _nodejs_function = {
       url         = "nodejs-function"
       http_method = "GET"
