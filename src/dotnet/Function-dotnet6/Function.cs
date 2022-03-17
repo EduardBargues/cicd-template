@@ -24,7 +24,7 @@ namespace Function
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            context?.Logger?.Log($@"DOTNET-3.1-FUNCTION LAMBDA EXECUTION
+            context?.Logger?.Log($@"DOTNET-6-FUNCTION LAMBDA EXECUTION
     request-id: {request?.RequestContext?.RequestId}
     aws-request-id: {context?.AwsRequestId}");
 

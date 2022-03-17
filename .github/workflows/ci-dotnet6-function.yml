@@ -1,0 +1,17 @@
+name: ci-dotnet6-function
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/dotnet/Function-dotnet6/**"
+      - "src/dotnet/Service/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build-dotnet-webapi
+        run: |
+          chmod +x -R ./scripts
+          ./scripts/builds/dotnet/build-dotnet-app.sh "src/dotnet/Function-dotnet6" "csproj"
+  
